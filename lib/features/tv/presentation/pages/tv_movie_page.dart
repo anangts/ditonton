@@ -106,6 +106,15 @@ class _HomeTvPageState extends State<HomeTvPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Center(
+                  child: Text(
+                    'TV Series',
+                    style: kHeading5,
+                  ),
+                ),
+              ),
               Text(
                 'Now Playing',
                 style: kHeading6,

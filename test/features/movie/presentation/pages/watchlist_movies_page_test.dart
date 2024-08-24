@@ -2,6 +2,7 @@ import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/features/movie/domain/entities/movie.dart';
 import 'package:ditonton/features/movie/presentation/provider/watchlist_movie_notifier.dart';
 import 'package:ditonton/features/movie/presentation/pages/watchlist_movies_page.dart';
+import 'package:ditonton/features/movie/presentation/widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -62,5 +63,23 @@ void main() {
     await tester.pumpWidget(makeTestableWidget(const WatchlistMoviesPage()));
 
     expect(textFinder, findsOneWidget);
+  });
+  testWidgets('Page should display MovieCard when data is loaded with movies',
+      (WidgetTester tester) async {
+    when(mockNotifier.watchlistState).thenReturn(RequestState.loaded);
+    when(mockNotifier.watchlistMovies).thenReturn([
+      Movie(
+        id: 1,
+        title: 'Movie Title',
+        overview: 'Movie Overview',
+        posterPath: '/poster_path.jpg',
+      ),
+    ]);
+
+    final movieCardFinder = find.byType(MovieCard);
+
+    await tester.pumpWidget(makeTestableWidget(const WatchlistMoviesPage()));
+
+    expect(movieCardFinder, findsOneWidget);
   });
 }

@@ -106,6 +106,15 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Center(
+                  child: Text(
+                    'Movie',
+                    style: kHeading5,
+                  ),
+                ),
+              ),
               Text(
                 'Now Playing',
                 style: kHeading6,

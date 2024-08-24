@@ -1,7 +1,7 @@
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/features/tv/presentation/provider/tv_watchlist_notifier.dart';
-import 'package:ditonton/features/tv/presentation/widgets/movie_card_list.dart';
+import 'package:ditonton/features/tv/presentation/widgets/tv_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +41,7 @@ class _WatchlistTvPageState extends State<WatchlistTvPage> with RouteAware {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Watchlist'),
+        title: const Text('Watchlist Tv Series'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

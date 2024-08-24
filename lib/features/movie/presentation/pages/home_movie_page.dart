@@ -9,10 +9,13 @@ import 'package:ditonton/features/movie/presentation/pages/top_rated_movies_page
 import 'package:ditonton/features/movie/presentation/pages/watchlist_movies_page.dart';
 import 'package:ditonton/features/movie/presentation/provider/movie_list_notifier.dart';
 import 'package:ditonton/common/state_enum.dart';
+import 'package:ditonton/features/tv/presentation/pages/tv_movie_page.dart';
+import 'package:ditonton/features/tv/presentation/pages/tv_watchlist_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomeMoviePage extends StatefulWidget {
+  static const routeName = '/home-movie';
   const HomeMoviePage({super.key});
 
   @override
@@ -52,14 +55,28 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
               leading: const Icon(Icons.movie),
               title: const Text('Movies'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pushNamed(context, HomeMoviePage.routeName);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.movie),
+              title: const Text('TV Series'),
+              onTap: () {
+                Navigator.pushNamed(context, HomeTvPage.routeName);
               },
             ),
             ListTile(
               leading: const Icon(Icons.save_alt),
-              title: const Text('Watchlist'),
+              title: const Text('Watchlist Movie'),
               onTap: () {
                 Navigator.pushNamed(context, WatchlistMoviesPage.routeName);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.save_alt),
+              title: const Text('Watchlist TV Series'),
+              onTap: () {
+                Navigator.pushNamed(context, WatchlistTvPage.routeName);
               },
             ),
             ListTile(

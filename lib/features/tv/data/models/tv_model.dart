@@ -7,12 +7,12 @@ class TvModel extends Equatable {
     required this.backdropPath,
     required this.genreIds,
     required this.id,
-    required this.originalTitle,
+    required this.originalName,
     required this.overview,
     required this.popularity,
     required this.posterPath,
     required this.releaseDate,
-    required this.title,
+    required this.name,
     required this.video,
     required this.voteAverage,
     required this.voteCount,
@@ -22,13 +22,13 @@ class TvModel extends Equatable {
   final String? backdropPath;
   final List<int> genreIds;
   final int id;
-  final String originalTitle;
+  final String? originalName;
   final String overview;
   final double popularity;
   final String? posterPath;
   final String? releaseDate;
-  final String title;
-  final bool video;
+  final String? name;
+  final bool? video;
   final double voteAverage;
   final int voteCount;
 
@@ -37,12 +37,12 @@ class TvModel extends Equatable {
         backdropPath: json["backdrop_path"],
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
         id: json["id"],
-        originalTitle: json["original_title"],
+        originalName: json["original_title"],
         overview: json["overview"],
         popularity: json["popularity"].toDouble(),
         posterPath: json["poster_path"],
         releaseDate: json["release_date"],
-        title: json["title"],
+        name: json["title"],
         video: json["video"],
         voteAverage: json["vote_average"].toDouble(),
         voteCount: json["vote_count"],
@@ -53,12 +53,12 @@ class TvModel extends Equatable {
         "backdrop_path": backdropPath,
         "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
         "id": id,
-        "original_title": originalTitle,
+        "original_title": originalName,
         "overview": overview,
         "popularity": popularity,
         "poster_path": posterPath,
         "release_date": releaseDate,
-        "title": title,
+        "title": name,
         "video": video,
         "vote_average": voteAverage,
         "vote_count": voteCount,
@@ -70,12 +70,12 @@ class TvModel extends Equatable {
       backdropPath: backdropPath,
       genreIds: genreIds,
       id: id,
-      originalTitle: originalTitle,
+      originalTitle: originalName,
       overview: overview,
       popularity: popularity,
       posterPath: posterPath,
       releaseDate: releaseDate,
-      title: title,
+      title: name,
       video: video,
       voteAverage: voteAverage,
       voteCount: voteCount,
@@ -88,12 +88,12 @@ class TvModel extends Equatable {
         backdropPath,
         genreIds,
         id,
-        originalTitle,
+        originalName,
         overview,
         popularity,
         posterPath,
         releaseDate,
-        title,
+        name,
         video,
         voteAverage,
         voteCount,

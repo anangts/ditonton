@@ -1,4 +1,5 @@
 import 'package:ditonton/features/tv/data/models/tv_genre_model.dart';
+import 'package:ditonton/features/tv/domain/entities/tv_detail.dart';
 import 'package:equatable/equatable.dart';
 
 class TvDetailResponse extends Equatable {
@@ -11,7 +12,7 @@ class TvDetailResponse extends Equatable {
     required this.id,
     required this.imdbId,
     required this.originalLanguage,
-    required this.originalTitle,
+    required this.originalName,
     required this.overview,
     required this.popularity,
     required this.posterPath,
@@ -20,7 +21,7 @@ class TvDetailResponse extends Equatable {
     required this.runtime,
     required this.status,
     required this.tagline,
-    required this.title,
+    required this.name,
     required this.video,
     required this.voteAverage,
     required this.voteCount,
@@ -28,23 +29,23 @@ class TvDetailResponse extends Equatable {
 
   final bool adult;
   final String? backdropPath;
-  final int budget;
+  final int? budget;
   final List<TvGenreModel> genres;
   final String homepage;
   final int id;
   final String? imdbId;
   final String originalLanguage;
-  final String originalTitle;
+  final String? originalName;
   final String overview;
   final double popularity;
   final String posterPath;
-  final String releaseDate;
-  final int revenue;
-  final int runtime;
+  final String? releaseDate;
+  final int? revenue;
+  final int? runtime;
   final String status;
   final String tagline;
-  final String title;
-  final bool video;
+  final String name;
+  final bool? video;
   final double voteAverage;
   final int voteCount;
 
@@ -53,13 +54,13 @@ class TvDetailResponse extends Equatable {
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
         budget: json["budget"],
-        genres: List<GenreModel>.from(
-            json["genres"].map((x) => GenreModel.fromJson(x))),
+        genres: List<TvGenreModel>.from(
+            json["genres"].map((x) => TvGenreModel.fromJson(x))),
         homepage: json["homepage"],
         id: json["id"],
         imdbId: json["imdb_id"],
         originalLanguage: json["original_language"],
-        originalTitle: json["original_title"],
+        originalName: json["original_name"],
         overview: json["overview"],
         popularity: json["popularity"].toDouble(),
         posterPath: json["poster_path"],
@@ -68,7 +69,7 @@ class TvDetailResponse extends Equatable {
         runtime: json["runtime"],
         status: json["status"],
         tagline: json["tagline"],
-        title: json["title"],
+        name: json["name"],
         video: json["video"],
         voteAverage: json["vote_average"].toDouble(),
         voteCount: json["vote_count"],
@@ -83,7 +84,7 @@ class TvDetailResponse extends Equatable {
         "id": id,
         "imdb_id": imdbId,
         "original_language": originalLanguage,
-        "original_title": originalTitle,
+        "original_title": originalName,
         "overview": overview,
         "popularity": popularity,
         "poster_path": posterPath,
@@ -92,7 +93,7 @@ class TvDetailResponse extends Equatable {
         "runtime": runtime,
         "status": status,
         "tagline": tagline,
-        "title": title,
+        "title": name,
         "video": video,
         "vote_average": voteAverage,
         "vote_count": voteCount,
@@ -104,12 +105,12 @@ class TvDetailResponse extends Equatable {
       backdropPath: backdropPath,
       genres: genres.map((genre) => genre.toEntity()).toList(),
       id: id,
-      originalTitle: originalTitle,
+      originalName: originalName,
       overview: overview,
       posterPath: posterPath,
       releaseDate: releaseDate,
       runtime: runtime,
-      title: title,
+      title: name,
       voteAverage: voteAverage,
       voteCount: voteCount,
     );
@@ -126,7 +127,7 @@ class TvDetailResponse extends Equatable {
         id,
         imdbId,
         originalLanguage,
-        originalTitle,
+        originalName,
         overview,
         popularity,
         posterPath,
@@ -135,7 +136,7 @@ class TvDetailResponse extends Equatable {
         runtime,
         status,
         tagline,
-        title,
+        name,
         video,
         voteAverage,
         voteCount,

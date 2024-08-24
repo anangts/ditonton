@@ -1,35 +1,38 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/common/constants.dart';
-import 'package:ditonton/features/movie/domain/entities/movie.dart';
 import 'package:ditonton/features/movie/presentation/pages/about_page.dart';
-import 'package:ditonton/features/movie/presentation/pages/movie_detail_page.dart';
-import 'package:ditonton/features/movie/presentation/pages/popular_movies_page.dart';
-import 'package:ditonton/features/movie/presentation/pages/search_page.dart';
-import 'package:ditonton/features/movie/presentation/pages/top_rated_movies_page.dart';
+import 'package:ditonton/features/movie/presentation/pages/home_movie_page.dart';
 import 'package:ditonton/features/movie/presentation/pages/watchlist_movies_page.dart';
-import 'package:ditonton/features/movie/presentation/provider/movie_list_notifier.dart';
+import 'package:ditonton/features/tv/domain/entities/tv.dart';
 import 'package:ditonton/common/state_enum.dart';
+import 'package:ditonton/features/tv/presentation/pages/tv_movie_detail_page.dart';
+import 'package:ditonton/features/tv/presentation/pages/tv_popular_page.dart';
+import 'package:ditonton/features/tv/presentation/pages/tv_search_page.dart';
+import 'package:ditonton/features/tv/presentation/pages/tv_top_rated_page.dart';
+import 'package:ditonton/features/tv/presentation/pages/tv_watchlist_page.dart';
+import 'package:ditonton/features/tv/presentation/provider/tv_list_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomeMoviePage extends StatefulWidget {
-  const HomeMoviePage({super.key});
+class HomeTvPage extends StatefulWidget {
+  static const routeName = '/home-tv';
+  const HomeTvPage({super.key});
 
   @override
-  State<HomeMoviePage> createState() => _HomeMoviePageState();
+  State<HomeTvPage> createState() => _HomeTvPageState();
 }
 
-class _HomeMoviePageState extends State<HomeMoviePage> {
+class _HomeTvPageState extends State<HomeTvPage> {
   @override
   void initState() {
     super.initState();
     Future.microtask(
       () {
         if (mounted) {
-          Provider.of<MovieListNotifier>(context, listen: false)
-            ..fetchNowPlayingMovies()
-            ..fetchPopularMovies()
-            ..fetchTopRatedMovies();
+          Provider.of<TvListNotifier>(context, listen: false)
+            ..fetchNowPlayingTv()
+            ..fetchPopularTv()
+            ..fetchTopRatedTv();
         }
       },
     );
@@ -52,14 +55,28 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
               leading: const Icon(Icons.movie),
               title: const Text('Movies'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pushNamed(context, HomeMoviePage.routeName);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.movie),
+              title: const Text('TV Series'),
+              onTap: () {
+                Navigator.pushNamed(context, HomeTvPage.routeName);
               },
             ),
             ListTile(
               leading: const Icon(Icons.save_alt),
-              title: const Text('Watchlist'),
+              title: const Text('Watchlist Movie'),
               onTap: () {
                 Navigator.pushNamed(context, WatchlistMoviesPage.routeName);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.save_alt),
+              title: const Text('Watchlist TV Series'),
+              onTap: () {
+                Navigator.pushNamed(context, WatchlistTvPage.routeName);
               },
             ),
             ListTile(
@@ -77,7 +94,7 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, SearchPage.routeName);
+              Navigator.pushNamed(context, TvSearchPage.routeName);
             },
             icon: const Icon(Icons.search),
           )
@@ -93,14 +110,14 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                 'Now Playing',
                 style: kHeading6,
               ),
-              Consumer<MovieListNotifier>(builder: (context, data, child) {
+              Consumer<TvListNotifier>(builder: (context, data, child) {
                 final state = data.nowPlayingState;
                 if (state == RequestState.loading) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else if (state == RequestState.loaded) {
-                  return MovieList(data.nowPlayingMovies);
+                  return TvList(data.nowPlayingTv);
                 } else {
                   return const Text('Failed');
                 }
@@ -108,16 +125,16 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
               _buildSubHeading(
                 title: 'Popular',
                 onTap: () =>
-                    Navigator.pushNamed(context, PopularMoviesPage.routeName),
+                    Navigator.pushNamed(context, PopularTvPage.routeName),
               ),
-              Consumer<MovieListNotifier>(builder: (context, data, child) {
-                final state = data.popularMoviesState;
+              Consumer<TvListNotifier>(builder: (context, data, child) {
+                final state = data.popularTvState;
                 if (state == RequestState.loading) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else if (state == RequestState.loaded) {
-                  return MovieList(data.popularMovies);
+                  return TvList(data.popularTv);
                 } else {
                   return const Text('Failed');
                 }
@@ -125,16 +142,16 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
               _buildSubHeading(
                 title: 'Top Rated',
                 onTap: () =>
-                    Navigator.pushNamed(context, TopRatedMoviesPage.routeName),
+                    Navigator.pushNamed(context, TopRatedTvPage.routeName),
               ),
-              Consumer<MovieListNotifier>(builder: (context, data, child) {
-                final state = data.topRatedMoviesState;
+              Consumer<TvListNotifier>(builder: (context, data, child) {
+                final state = data.topRatedTvState;
                 if (state == RequestState.loading) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else if (state == RequestState.loaded) {
-                  return MovieList(data.topRatedMovies);
+                  return TvList(data.topRatedTv);
                 } else {
                   return const Text('Failed');
                 }
@@ -168,10 +185,10 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
   }
 }
 
-class MovieList extends StatelessWidget {
-  final List<Movie> movies;
+class TvList extends StatelessWidget {
+  final List<Tv> tvs;
 
-  const MovieList(this.movies, {super.key});
+  const TvList(this.tvs, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -180,21 +197,21 @@ class MovieList extends StatelessWidget {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          final movie = movies[index];
+          final tv = tvs[index];
           return Container(
             padding: const EdgeInsets.all(8),
             child: InkWell(
               onTap: () {
                 Navigator.pushNamed(
                   context,
-                  MovieDetailPage.routeName,
-                  arguments: movie.id,
+                  TvDetailPage.routeName,
+                  arguments: tv.id,
                 );
               },
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(16)),
                 child: CachedNetworkImage(
-                  imageUrl: '$baseImageUrl${movie.posterPath}',
+                  imageUrl: '$baseImageUrl${tv.posterPath}',
                   placeholder: (context, url) => const Center(
                     child: CircularProgressIndicator(),
                   ),
@@ -204,7 +221,7 @@ class MovieList extends StatelessWidget {
             ),
           );
         },
-        itemCount: movies.length,
+        itemCount: tvs.length,
       ),
     );
   }

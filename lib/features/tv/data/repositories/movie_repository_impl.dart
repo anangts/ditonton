@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:ditonton/features/tv/data/datasources/tv_local_data_source.dart';
 import 'package:ditonton/features/tv/data/datasources/tv_remote_data_source.dart';
 import 'package:ditonton/features/tv/data/models/tv_table.dart';
-import 'package:ditonton/features/tv/domain/entities/movie_detail.dart';
+import 'package:ditonton/features/tv/domain/entities/tv_detail.dart';
 import 'package:ditonton/features/tv/domain/entities/tv.dart';
 
 import 'package:ditonton/features/tv/domain/repositories/tv_repository.dart';

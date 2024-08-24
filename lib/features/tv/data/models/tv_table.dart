@@ -1,4 +1,4 @@
-import 'package:ditonton/features/tv/domain/entities/movie_detail.dart';
+import 'package:ditonton/features/tv/domain/entities/tv_detail.dart';
 import 'package:ditonton/features/tv/domain/entities/tv.dart';
 import 'package:equatable/equatable.dart';
 

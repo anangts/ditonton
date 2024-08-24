@@ -1,27 +1,27 @@
 import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/features/movie/presentation/provider/top_rated_movies_notifier.dart';
-import 'package:ditonton/features/movie/presentation/widgets/movie_card_list.dart';
+import 'package:ditonton/features/tv/presentation/provider/tv_popular_notifier.dart';
+import 'package:ditonton/features/tv/presentation/widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class TopRatedMoviesPage extends StatefulWidget {
-  static const routeName = '/top-rated-movie';
+class PopularTvPage extends StatefulWidget {
+  static const routeName = '/popular-tv';
 
-  const TopRatedMoviesPage({super.key});
+  const PopularTvPage({super.key});
 
   @override
-  State<TopRatedMoviesPage> createState() => _TopRatedMoviesPageState();
+  State<PopularTvPage> createState() => _PopularTvPageState();
 }
 
-class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
+class _PopularTvPageState extends State<PopularTvPage> {
   @override
   void initState() {
     super.initState();
     Future.microtask(
       () {
         if (mounted) {
-          Provider.of<TopRatedMoviesNotifier>(context, listen: false)
-              .fetchTopRatedMovies();
+          Provider.of<PopularTvNotifier>(context, listen: false)
+              .fetchPopularTv();
         }
       },
     );
@@ -31,11 +31,11 @@ class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Top Rated Movies'),
+        title: const Text('Popular Tvs'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<TopRatedMoviesNotifier>(
+        child: Consumer<PopularTvNotifier>(
           builder: (context, data, child) {
             if (data.state == RequestState.loading) {
               return const Center(
@@ -44,10 +44,10 @@ class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
             } else if (data.state == RequestState.loaded) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final movie = data.movies[index];
-                  return MovieCard(movie);
+                  final tv = data.tvs[index];
+                  return TvCard(tv);
                 },
-                itemCount: data.movies.length,
+                itemCount: data.tvs.length,
               );
             } else {
               return Center(

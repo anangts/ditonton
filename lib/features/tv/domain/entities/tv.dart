@@ -9,12 +9,12 @@ class Tv extends Equatable {
     this.backdropPath,
     this.genreIds,
     required this.id,
-    this.originalTitle,
+    this.originalName,
     this.overview,
     this.popularity,
     this.posterPath,
     this.releaseDate,
-    this.title,
+    this.name,
     this.video,
     this.voteAverage,
     this.voteCount,
@@ -25,19 +25,19 @@ class Tv extends Equatable {
     required this.id,
     this.overview,
     this.posterPath,
-    this.title,
+    this.name,
   });
 
   bool? adult;
   String? backdropPath;
   List<int>? genreIds;
   int id;
-  String? originalTitle;
+  String? originalName;
   String? overview;
   double? popularity;
   String? posterPath;
   String? releaseDate;
-  String? title;
+  String? name;
   bool? video;
   double? voteAverage;
   int? voteCount;
@@ -48,12 +48,12 @@ class Tv extends Equatable {
         backdropPath,
         genreIds,
         id,
-        originalTitle,
+        originalName,
         overview,
         popularity,
         posterPath,
         releaseDate,
-        title,
+        name,
         video,
         voteAverage,
         voteCount,

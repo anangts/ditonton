@@ -44,7 +44,7 @@ class TvDetailResponse extends Equatable {
   final int? runtime;
   final String status;
   final String tagline;
-  final String name;
+  final String? name;
   final bool? video;
   final double voteAverage;
   final int voteCount;
@@ -84,7 +84,7 @@ class TvDetailResponse extends Equatable {
         "id": id,
         "imdb_id": imdbId,
         "original_language": originalLanguage,
-        "original_title": originalName,
+        "original_name": originalName,
         "overview": overview,
         "popularity": popularity,
         "poster_path": posterPath,
@@ -93,7 +93,7 @@ class TvDetailResponse extends Equatable {
         "runtime": runtime,
         "status": status,
         "tagline": tagline,
-        "title": name,
+        "name": name,
         "video": video,
         "vote_average": voteAverage,
         "vote_count": voteCount,
@@ -110,7 +110,7 @@ class TvDetailResponse extends Equatable {
       posterPath: posterPath,
       releaseDate: releaseDate,
       runtime: runtime,
-      title: name,
+      name: name,
       voteAverage: voteAverage,
       voteCount: voteCount,
     );

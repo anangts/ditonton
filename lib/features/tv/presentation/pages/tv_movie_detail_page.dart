@@ -107,7 +107,7 @@ class DetailContent extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              tv.title,
+                              tv.name ?? '',
                               style: kHeading5,
                             ),
                             ElevatedButton(

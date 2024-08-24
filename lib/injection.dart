@@ -160,7 +160,7 @@ void init() {
   locator.registerLazySingleton(() => GetTvRecommendations(locator()));
   locator.registerLazySingleton(() => SearchTv(locator()));
   locator.registerLazySingleton(() => GetTvWatchListStatus(locator()));
-  locator.registerLazySingleton(() => SaveTvWatchList(locator()));
+  locator.registerLazySingleton(() => SaveTvWatchlist(locator()));
   locator.registerLazySingleton(() => RemoveTvWatchlist(locator()));
   locator.registerLazySingleton(() => GetTvWatchlist(locator()));
 

@@ -23,7 +23,7 @@ class TvRepositoryImpl implements TvRepository {
   @override
   Future<Either<Failure, List<Tv>>> getNowPlayingTvs() async {
     try {
-      final result = await remoteDataSource.getNowPlayingTvs();
+      final result = await remoteDataSource.getNowPlayingTv();
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return const Left(ServerFailure(''));
@@ -59,7 +59,7 @@ class TvRepositoryImpl implements TvRepository {
   @override
   Future<Either<Failure, List<Tv>>> getPopularTvs() async {
     try {
-      final result = await remoteDataSource.getPopularTvs();
+      final result = await remoteDataSource.getPopularTv();
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return const Left(ServerFailure(''));
@@ -71,7 +71,7 @@ class TvRepositoryImpl implements TvRepository {
   @override
   Future<Either<Failure, List<Tv>>> getTopRatedTvs() async {
     try {
-      final result = await remoteDataSource.getTopRatedTvs();
+      final result = await remoteDataSource.getTopRatedTv();
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return const Left(ServerFailure(''));
@@ -81,9 +81,9 @@ class TvRepositoryImpl implements TvRepository {
   }
 
   @override
-  Future<Either<Failure, List<Tv>>> searchTvs(String query) async {
+  Future<Either<Failure, List<Tv>>> searchTv(String query) async {
     try {
-      final result = await remoteDataSource.searchTvs(query);
+      final result = await remoteDataSource.searchTv(query);
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return const Left(ServerFailure(''));

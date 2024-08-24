@@ -20,19 +20,34 @@ class TvDatabaseHelper {
 
   static const String _tblWatchlist = 'watchlistTv';
 
+  // Future<Database> _initDb() async {
+  //   final path = await getDatabasesPath();
+  //   final databasePath = '$path/ditontonTv.db';
+
+  //   var db = await openDatabase(databasePath, version: 1, onCreate: _onCreate);
+  //   return db;
+  // }
+
   Future<Database> _initDb() async {
     final path = await getDatabasesPath();
     final databasePath = '$path/ditontonTv.db';
 
-    var db = await openDatabase(databasePath, version: 1, onCreate: _onCreate);
+    var db = await openDatabase(databasePath,
+        version: 2, onCreate: _onCreate, onUpgrade: _onUpgrade);
     return db;
+  }
+
+  void _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute('ALTER TABLE $_tblWatchlist ADD COLUMN name TEXT');
+    }
   }
 
   void _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE  $_tblWatchlist (
         id INTEGER PRIMARY KEY,
-        title TEXT,
+        name TEXT,
         overview TEXT,
         posterPath TEXT
       );

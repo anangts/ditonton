@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:ditonton/features/tv/domain/entities/tv.dart';
-import 'package:ditonton/features/tv/domain/usecases/get_tv_popular.dart';
+import 'package:ditonton/features/tv/domain/usecases/tv_get_popular.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -8,12 +8,12 @@ import 'package:mockito/mockito.dart';
 import '../../helpers/tv_test_helper.mocks.dart';
 
 void main() {
-  late GetTvPopular usecase;
+  late TvGetPopular usecase;
   late MockTvRepository mockTvRpository;
 
   setUp(() {
     mockTvRpository = MockTvRepository();
-    usecase = GetTvPopular(mockTvRpository);
+    usecase = TvGetPopular(mockTvRpository);
   });
 
   final tTv = <Tv>[];

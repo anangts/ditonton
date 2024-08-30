@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:ditonton/features/tv/domain/usecases/save_tv_watchlist.dart';
+import 'package:ditonton/features/tv/domain/usecases/tv_save_watchlist.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -7,12 +7,12 @@ import '../../dummy_data/dummy_objects.dart';
 import '../../helpers/tv_test_helper.mocks.dart';
 
 void main() {
-  late SaveTvWatchlist usecase;
+  late TvSaveWatchlist usecase;
   late MockTvRepository mockTvRepository;
 
   setUp(() {
     mockTvRepository = MockTvRepository();
-    usecase = SaveTvWatchlist(mockTvRepository);
+    usecase = TvSaveWatchlist(mockTvRepository);
   });
 
   test('should save tv to the repository', () async {

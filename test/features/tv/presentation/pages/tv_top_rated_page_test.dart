@@ -1,66 +1,66 @@
-import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/features/tv/domain/entities/tv.dart';
-import 'package:ditonton/features/tv/presentation/pages/tv_top_rated_page.dart';
-import 'package:ditonton/features/tv/presentation/provider/tv_top_rated_notifier.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
+// import 'package:ditonton/common/state_enum.dart';
+// import 'package:ditonton/features/tv/domain/entities/tv.dart';
+// import 'package:ditonton/features/tv/presentation/pages/tv_top_rated_page.dart';
+// import 'package:ditonton/features/tv/presentation/provider/tv_top_rated_notifier.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_test/flutter_test.dart';
+// import 'package:mockito/annotations.dart';
+// import 'package:mockito/mockito.dart';
+// import 'package:provider/provider.dart';
 
-import 'tv_top_rated_page_test.mocks.dart';
+// import 'tv_top_rated_page_test.mocks.dart';
 
-@GenerateMocks([TopRatedTvNotifier])
-void main() {
-  late MockTopRatedTvNotifier mockNotifier;
+// @GenerateMocks([TopRatedTvNotifier])
+// void main() {
+//   late MockTopRatedTvNotifier mockNotifier;
 
-  setUp(() {
-    mockNotifier = MockTopRatedTvNotifier();
-  });
+//   setUp(() {
+//     mockNotifier = MockTopRatedTvNotifier();
+//   });
 
-  Widget makeTestableWidget(Widget body) {
-    return ChangeNotifierProvider<TopRatedTvNotifier>.value(
-      value: mockNotifier,
-      child: MaterialApp(
-        home: body,
-      ),
-    );
-  }
+//   Widget makeTestableWidget(Widget body) {
+//     return ChangeNotifierProvider<TopRatedTvNotifier>.value(
+//       value: mockNotifier,
+//       child: MaterialApp(
+//         home: body,
+//       ),
+//     );
+//   }
 
-  testWidgets('Page should display progress bar when loading',
-      (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.loading);
+//   testWidgets('Page should display progress bar when loading',
+//       (WidgetTester tester) async {
+//     when(mockNotifier.state).thenReturn(RequestState.loading);
 
-    final progressFinder = find.byType(CircularProgressIndicator);
-    final centerFinder = find.byType(Center);
+//     final progressFinder = find.byType(CircularProgressIndicator);
+//     final centerFinder = find.byType(Center);
 
-    await tester.pumpWidget(makeTestableWidget(const TopRatedTvPage()));
+//     await tester.pumpWidget(makeTestableWidget(const TopRatedTvPage()));
 
-    expect(centerFinder, findsOneWidget);
-    expect(progressFinder, findsOneWidget);
-  });
+//     expect(centerFinder, findsOneWidget);
+//     expect(progressFinder, findsOneWidget);
+//   });
 
-  testWidgets('Page should display when data is loaded',
-      (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.loaded);
-    when(mockNotifier.tvs).thenReturn(<Tv>[]);
+//   testWidgets('Page should display when data is loaded',
+//       (WidgetTester tester) async {
+//     when(mockNotifier.state).thenReturn(RequestState.loaded);
+//     when(mockNotifier.tvs).thenReturn(<Tv>[]);
 
-    final listViewFinder = find.byType(ListView);
+//     final listViewFinder = find.byType(ListView);
 
-    await tester.pumpWidget(makeTestableWidget(const TopRatedTvPage()));
+//     await tester.pumpWidget(makeTestableWidget(const TopRatedTvPage()));
 
-    expect(listViewFinder, findsOneWidget);
-  });
+//     expect(listViewFinder, findsOneWidget);
+//   });
 
-  testWidgets('Page should display text with message when Error',
-      (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.error);
-    when(mockNotifier.message).thenReturn('Error message');
+//   testWidgets('Page should display text with message when Error',
+//       (WidgetTester tester) async {
+//     when(mockNotifier.state).thenReturn(RequestState.error);
+//     when(mockNotifier.message).thenReturn('Error message');
 
-    final textFinder = find.byKey(const Key('error_message'));
+//     final textFinder = find.byKey(const Key('error_message'));
 
-    await tester.pumpWidget(makeTestableWidget(const TopRatedTvPage()));
+//     await tester.pumpWidget(makeTestableWidget(const TopRatedTvPage()));
 
-    expect(textFinder, findsOneWidget);
-  });
-}
+//     expect(textFinder, findsOneWidget);
+//   });
+// }

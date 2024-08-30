@@ -1,24 +1,14 @@
 import 'package:ditonton/common/constants.dart';
-import 'package:ditonton/common/utils.dart'; 
-import 'package:ditonton/features/movie/presentation/pages/about_page.dart';
-import 'package:ditonton/features/movie/presentation/pages/movie_detail_page.dart';
-import 'package:ditonton/features/movie/presentation/pages/home_movie_page.dart';
-import 'package:ditonton/features/movie/presentation/pages/popular_movies_page.dart';
-import 'package:ditonton/features/movie/presentation/pages/search_page.dart';
-import 'package:ditonton/features/movie/presentation/pages/top_rated_movies_page.dart';
-import 'package:ditonton/features/movie/presentation/pages/watchlist_movies_page.dart';
-import 'package:ditonton/features/tv/presentation/pages/tv_movie_detail_page.dart';
-import 'package:ditonton/features/tv/presentation/pages/tv_movie_page.dart';
-import 'package:ditonton/features/tv/presentation/pages/tv_popular_page.dart';
-import 'package:ditonton/features/tv/presentation/pages/tv_search_page.dart';
-import 'package:ditonton/features/tv/presentation/pages/tv_top_rated_page.dart';
-import 'package:ditonton/features/tv/presentation/pages/tv_watchlist_page.dart';
+import 'package:ditonton/common/utils.dart';  
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ditonton/injection.dart' as di;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'features/movie/presentation/bloc/bloc_export.dart';
+import 'features/movie/presentation/pages/page.dart';
+import 'features/tv/presentation/bloc/bloc_export.dart';
+import 'features/tv/presentation/pages/page.dart';
  
 
 void main() {
@@ -49,6 +39,25 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => di.locator<WatchlistMovieBloc>(),
+        ),
+        // Tv Series
+        BlocProvider(
+          create: (_) => di.locator<TvListBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<TvDetailBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<TvSearchBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<TvTopRatedBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<TvPopularBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<TvWatchlistBloc>(),
         ),
       ],
       child: MaterialApp(
@@ -81,10 +90,10 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                   builder: (_) => const WatchlistMoviesPage());
             //TV Series
-            case HomeTvPage.routeName:
-              return MaterialPageRoute(builder: (_) => const HomeTvPage());
-            case PopularTvPage.routeName:
-              return CupertinoPageRoute(builder: (_) => const PopularTvPage());
+            case TvHomePage.routeName:
+              return MaterialPageRoute(builder: (_) => const TvHomePage());
+            case TvPopularPage.routeName:
+              return CupertinoPageRoute(builder: (_) => const TvPopularPage());
             case TopRatedTvPage.routeName:
               return CupertinoPageRoute(builder: (_) => const TopRatedTvPage());
             case TvDetailPage.routeName:

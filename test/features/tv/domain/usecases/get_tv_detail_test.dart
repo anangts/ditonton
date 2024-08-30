@@ -1,17 +1,17 @@
 import 'package:dartz/dartz.dart';
-import 'package:ditonton/features/tv/domain/usecases/get_tv_detail.dart';
+import 'package:ditonton/features/tv/domain/usecases/tv_get_detail.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import '../../dummy_data/dummy_objects.dart';
 import '../../helpers/tv_test_helper.mocks.dart';
 
 void main() {
-  late GetTvDetail usecase;
+  late TvGetDetail usecase;
   late MockTvRepository mockTvRepository;
 
   setUp(() {
     mockTvRepository = MockTvRepository();
-    usecase = GetTvDetail(mockTvRepository);
+    usecase = TvGetDetail(mockTvRepository);
   });
 
   const tId = 1;

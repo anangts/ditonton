@@ -1,18 +1,18 @@
 import 'package:dartz/dartz.dart';
 import 'package:ditonton/features/tv/domain/entities/tv.dart';
-import 'package:ditonton/features/tv/domain/usecases/search_tv.dart';
+import 'package:ditonton/features/tv/domain/usecases/tv_search.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../helpers/tv_test_helper.mocks.dart';
 
 void main() {
-  late SearchTv usecase;
+  late TvSearch usecase;
   late MockTvRepository mockTvRepository;
 
   setUp(() {
     mockTvRepository = MockTvRepository();
-    usecase = SearchTv(mockTvRepository);
+    usecase = TvSearch(mockTvRepository);
   });
 
   final tTv = <Tv>[];

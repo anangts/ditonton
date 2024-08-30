@@ -3,12 +3,12 @@ import 'package:ditonton/common/failure.dart';
 import 'package:ditonton/features/tv/domain/entities/tv.dart';
 import 'package:ditonton/features/tv/domain/repositories/tv_repository.dart';
 
-class GetTvTopRated {
+class TvGetPopular {
   final TvRepository repository;
 
-  GetTvTopRated(this.repository);
+  TvGetPopular(this.repository);
 
   Future<Either<Failure, List<Tv>>> execute() {
-    return repository.getTopRatedTvs();
+    return repository.getPopularTvs();
   }
 }

@@ -1,59 +1,58 @@
 import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/features/tv/presentation/provider/tv_popular_notifier.dart';
-import 'package:ditonton/features/tv/presentation/widgets/tv_card_list.dart';
+import 'package:ditonton/features/tv/presentation/bloc/bloc_export.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ditonton/features/tv/presentation/widgets/tv_card_list.dart';
 
-class PopularTvPage extends StatefulWidget {
+class TvPopularPage extends StatefulWidget {
   static const routeName = '/popular-tv';
 
-  const PopularTvPage({super.key});
+  const TvPopularPage({super.key});
 
   @override
-  State<PopularTvPage> createState() => _PopularTvPageState();
+  State<TvPopularPage> createState() => _TvPopularPageState();
 }
 
-class _PopularTvPageState extends State<PopularTvPage> {
+class _TvPopularPageState extends State<TvPopularPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-      () {
-        if (mounted) {
-          Provider.of<PopularTvNotifier>(context, listen: false)
-              .fetchPopularTv();
-        }
-      },
-    );
+    Future.microtask(() {
+      if (mounted) {
+        context.read<TvPopularBloc>().add(FetchPopularTv());
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Popular Tvs'),
+        title: const Text('Popular Tv'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<PopularTvNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.loading) {
+        child: BlocBuilder<TvPopularBloc, TvPopularState>(
+          builder: (context, state) {
+            if (state.state == RequestState.loading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.state == RequestState.loaded) {
+            } else if (state.state == RequestState.loaded) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final tv = data.tvs[index];
+                  final tv = state.tvs[index];
                   return TvCard(tv);
                 },
-                itemCount: data.tvs.length,
+                itemCount: state.tvs.length,
               );
-            } else {
+            } else if (state.state==RequestState.error) {
               return Center(
                 key: const Key('error_message'),
-                child: Text(data.message),
+                child: Text(state.message),
               );
+            } else {
+              return Container();
             }
           },
         ),

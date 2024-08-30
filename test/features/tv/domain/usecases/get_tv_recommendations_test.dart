@@ -1,18 +1,18 @@
 import 'package:dartz/dartz.dart';
 import 'package:ditonton/features/tv/domain/entities/tv.dart';
-import 'package:ditonton/features/tv/domain/usecases/get_tv_recommendations.dart';
+import 'package:ditonton/features/tv/domain/usecases/tv_get_recommendations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../helpers/tv_test_helper.mocks.dart';
 
 void main() {
-  late GetTvRecommendations usecase;
+  late TvGetRecommendations usecase;
   late MockTvRepository mockTvRepository;
 
   setUp(() {
     mockTvRepository = MockTvRepository();
-    usecase = GetTvRecommendations(mockTvRepository);
+    usecase = TvGetRecommendations(mockTvRepository);
   });
 
   const tId = 1;

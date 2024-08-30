@@ -2,12 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/features/movie/domain/entities/movie.dart';
 import 'package:ditonton/features/movie/presentation/bloc/bloc_export.dart';
-import 'package:ditonton/features/movie/presentation/pages/page.dart'; 
+import 'package:ditonton/features/movie/presentation/pages/page.dart';
 import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/features/tv/presentation/pages/tv_movie_page.dart';
-import 'package:ditonton/features/tv/presentation/pages/tv_watchlist_page.dart'; 
+import 'package:ditonton/features/tv/presentation/pages/page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart'; 
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeMoviePage extends StatefulWidget {
   static const routeName = '/home-movie';
@@ -56,7 +55,7 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
               leading: const Icon(Icons.movie),
               title: const Text('TV Series'),
               onTap: () {
-                Navigator.pushNamed(context, HomeTvPage.routeName);
+                Navigator.pushNamed(context, TvHomePage.routeName);
               },
             ),
             ListTile(

@@ -2,9 +2,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/common/constants.dart';
-import 'package:ditonton/features/tv/domain/entities/tv.dart';
-import 'package:ditonton/features/tv/domain/entities/tv_detail.dart';
-import 'package:ditonton/features/tv/domain/entities/tvgenre.dart';
+import 'package:ditonton/features/tv/domain/entities/entites.dart'; 
 import 'package:ditonton/features/tv/presentation/provider/tv_detail_notifier.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:flutter/material.dart';

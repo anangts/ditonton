@@ -1,98 +1,111 @@
-// import 'package:ditonton/common/state_enum.dart';
-// import 'package:ditonton/features/tv/domain/entities/tv.dart';
-// import 'package:ditonton/features/tv/presentation/pages/tv_watchlist_page.dart';
-// import 'package:ditonton/features/tv/presentation/provider/tv_watchlist_notifier.dart';
-// import 'package:ditonton/features/tv/presentation/widgets/tv_card_list.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:mockito/annotations.dart';
-// import 'package:mockito/mockito.dart';
-// import 'package:provider/provider.dart';
+import 'package:ditonton/common/state_enum.dart';
+import 'package:ditonton/features/tv/domain/entities/tv.dart';
+import 'package:ditonton/features/tv/presentation/bloc/bloc_export.dart';
+import 'package:ditonton/features/tv/presentation/pages/tv_watchlist_page.dart';
+import 'package:ditonton/features/tv/presentation/widgets/tv_card_list.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'tv_watchlist_page_test.mocks.dart';
+ 
 
-// import 'tv_watchlist_page_test.mocks.dart';
+@GenerateMocks([TvWatchlistBloc])
+void main() {
+  late MockTvWatchlistBloc mockTvWatchlistBloc;
 
-// @GenerateMocks([WatchlistTvNotifier])
-// void main() {
-//   late MockWatchlistTvNotifier mockNotifier;
+  setUp(() {
+    mockTvWatchlistBloc = MockTvWatchlistBloc();
 
-//   setUp(() {
-//     mockNotifier = MockWatchlistTvNotifier();
-//   // });
+    // Stub the stream and close methods
+    when(mockTvWatchlistBloc.stream).thenAnswer((_) => const Stream.empty());
+    when(mockTvWatchlistBloc.state).thenReturn(const TvWatchlistState());
+    when(mockTvWatchlistBloc.close()).thenAnswer((_) async {
+      return;
+    });
+  });
 
-//   Widget makeTestableWidget(Widget body) {
-//     return ChangeNotifierProvider<WatchlistTvNotifier>.value(
-//       value: mockNotifier,
-//       child: MaterialApp(
-//         home: body,
-//       ),
-//     );
-//   }
+  Widget makeTestableWidget(Widget body) {
+    return BlocProvider<TvWatchlistBloc>.value(
+      value: mockTvWatchlistBloc,
+      child: MaterialApp(
+        home: body,
+      ),
+    );
+  }
 
-//   testWidgets('Page should display center progress bar when loading',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.watchlistState).thenReturn(RequestState.loading);
+  testWidgets('should display CircularProgressIndicator when state is loading',
+      (WidgetTester tester) async {
+    // Arrange
+    when(mockTvWatchlistBloc.state).thenReturn(const TvWatchlistState(
+      watchlistState: RequestState.loading,
+    ));
 
-//     final progressBarFinder = find.byType(CircularProgressIndicator);
-//     final centerFinder = find.byType(Center);
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const WatchlistTvPage()));
+    await tester.pump();
 
-//     await tester.pumpWidget(makeTestableWidget(const WatchlistTvPage()));
+    // Assert
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  });
 
-//     expect(centerFinder, findsOneWidget);
-//     expect(progressBarFinder, findsOneWidget);
-//   });
+  testWidgets('should display ListView when state is loaded with tvs',
+      (WidgetTester tester) async {
+    // Arrange
+    final tvs = [
+      Tv(
+        id: 1,
+        name: 'Test Tv',
+        overview: 'Test Overview',
+        posterPath: '/test.jpg',
+      ),
+    ];
+    when(mockTvWatchlistBloc.state).thenReturn(TvWatchlistState(
+      watchlistState: RequestState.loaded,
+      watchlistTv: tvs,
+    ));
 
-//   testWidgets('Page should display ListView when data is loaded',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.watchlistState).thenReturn(RequestState.loaded);
-//     when(mockNotifier.watchlistTv).thenReturn(<Tv>[]);
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const WatchlistTvPage()));
+    await tester.pump();
 
-//     final listViewFinder = find.byType(ListView);
+    // Assert
+    expect(find.byType(ListView), findsOneWidget);
+    expect(find.byType(TvCard), findsOneWidget);
+  });
 
-//     await tester.pumpWidget(makeTestableWidget(const WatchlistTvPage()));
+  testWidgets('should display empty message when watchlist is empty',
+      (WidgetTester tester) async {
+    // Arrange
+    when(mockTvWatchlistBloc.state).thenReturn(const TvWatchlistState(
+      watchlistState: RequestState.loaded,
+      watchlistTv: [],
+    ));
 
-//     expect(listViewFinder, findsOneWidget);
-//   });
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const WatchlistTvPage()));
+    await tester.pump();
 
-//   testWidgets('Page should display text with message when Error',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.watchlistState).thenReturn(RequestState.error);
-//     when(mockNotifier.message).thenReturn('Error message');
+    // Assert
+    expect(find.text('Watchlist is empty'), findsOneWidget);
+  });
 
-//     final textFinder = find.byKey(const Key('error_message'));
+  testWidgets('should display error message when state is error',
+      (WidgetTester tester) async {
+    // Arrange
+    const errorMessage = 'Failed to fetch data';
+    when(mockTvWatchlistBloc.state).thenReturn(const TvWatchlistState(
+      watchlistState: RequestState.error,
+      message: errorMessage,
+    ));
 
-//     await tester.pumpWidget(makeTestableWidget(const WatchlistTvPage()));
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const WatchlistTvPage()));
+    await tester.pump();
 
-//     expect(textFinder, findsOneWidget);
-//   });
-
-//   testWidgets('Page should display TvCard when data is loaded with tvs',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.watchlistState).thenReturn(RequestState.loaded);
-//     when(mockNotifier.watchlistTv).thenReturn([
-//       Tv(
-//         id: 1,
-//         name: 'Tv Name',
-//         overview: 'Tv Overview',
-//         posterPath: '/poster_path.jpg',
-//       ),
-//     ]);
-
-//     final tvCardFinder = find.byType(TvCard);
-
-//     await tester.pumpWidget(makeTestableWidget(const WatchlistTvPage()));
-
-//     expect(tvCardFinder, findsOneWidget);
-//   });
-
-//   testWidgets('Page should display text with message when Error',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.watchlistState).thenReturn(RequestState.error);
-//     when(mockNotifier.message).thenReturn('Error message');
-
-//     final textFinder = find.byKey(const Key('error_message'));
-
-//     await tester.pumpWidget(makeTestableWidget(const WatchlistTvPage()));
-
-//     expect(textFinder, findsOneWidget);
-//   });
-// }
+    // Assert
+    expect(find.byKey(const Key('error_message')), findsOneWidget);
+    expect(find.text(errorMessage), findsOneWidget);
+  });
+}

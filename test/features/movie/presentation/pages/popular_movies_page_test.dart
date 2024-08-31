@@ -1,66 +1,95 @@
-// import 'package:ditonton/common/state_enum.dart';
-// import 'package:ditonton/features/movie/domain/entities/movie.dart';
-// import 'package:ditonton/features/movie/presentation/pages/popular_movies_page.dart';
-// import 'package:ditonton/features/movie/presentation/provider/popular_movies_notifier.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:mockito/annotations.dart';
-// import 'package:mockito/mockito.dart';
-// import 'package:provider/provider.dart';
+import 'package:ditonton/common/state_enum.dart';
+import 'package:ditonton/features/movie/presentation/bloc/bloc_export.dart';
+import 'package:ditonton/features/movie/presentation/pages/page.dart';
+import 'package:ditonton/features/movie/domain/entities/movie.dart';
+import 'package:ditonton/features/movie/presentation/widgets/movie_card_list.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-// import 'popular_movies_page_test.mocks.dart';
+import 'popular_movies_page_test.mocks.dart';
 
-// @GenerateMocks([PopularMoviesNotifier])
-// void main() {
-//   late MockPopularMoviesNotifier mockNotifier;
+@GenerateMocks([PopularMoviesBloc])
+void main() {
+  late MockPopularMoviesBloc mockPopularMoviesBloc;
 
-//   setUp(() {
-//     mockNotifier = MockPopularMoviesNotifier();
-//   });
+  setUp(() {
+    mockPopularMoviesBloc = MockPopularMoviesBloc();
 
-//   Widget makeTestableWidget(Widget body) {
-//     return ChangeNotifierProvider<PopularMoviesNotifier>.value(
-//       value: mockNotifier,
-//       child: MaterialApp(
-//         home: body,
-//       ),
-//     );
-//   }
+    // Stub the stream and close methods
+    when(mockPopularMoviesBloc.stream).thenAnswer((_) => const Stream.empty());
+    when(mockPopularMoviesBloc.state).thenReturn(const PopularMoviesState());
+    when(mockPopularMoviesBloc.close()).thenAnswer((_) async {
+      return;
+    });
+  });
 
-//   testWidgets('Page should display center progress bar when loading',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.state).thenReturn(RequestState.loading);
+  Widget makeTestableWidget(Widget body) {
+    return BlocProvider<PopularMoviesBloc>.value(
+      value: mockPopularMoviesBloc,
+      child: MaterialApp(
+        home: body,
+      ),
+    );
+  }
 
-//     final progressBarFinder = find.byType(CircularProgressIndicator);
-//     final centerFinder = find.byType(Center);
+  testWidgets('should display CircularProgressIndicator when state is loading',
+      (WidgetTester tester) async {
+    // Arrange
+    when(mockPopularMoviesBloc.state).thenReturn(const PopularMoviesState(
+      state: RequestState.loading,
+    ));
 
-//     await tester.pumpWidget(makeTestableWidget(const PopularMoviesPage()));
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const PopularMoviesPage()));
+    await tester.pump();
 
-//     expect(centerFinder, findsOneWidget);
-//     expect(progressBarFinder, findsOneWidget);
-//   });
+    // Assert
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  });
 
-//   testWidgets('Page should display ListView when data is loaded',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.state).thenReturn(RequestState.loaded);
-//     when(mockNotifier.movies).thenReturn(<Movie>[]);
+  testWidgets('should display ListView when state is loaded',
+      (WidgetTester tester) async {
+    // Arrange
+    final movies = [
+      Movie(
+        id: 1,
+        title: 'Test Movie',
+        overview: 'Test Overview',
+        posterPath: '/test.jpg',
+      ),
+    ];
+    when(mockPopularMoviesBloc.state).thenReturn(PopularMoviesState(
+      state: RequestState.loaded,
+      movies: movies,
+    ));
 
-//     final listViewFinder = find.byType(ListView);
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const PopularMoviesPage()));
+    await tester.pump();
 
-//     await tester.pumpWidget(makeTestableWidget(const PopularMoviesPage()));
+    // Assert
+    expect(find.byType(ListView), findsOneWidget);
+    expect(find.byType(MovieCard), findsOneWidget);
+  });
 
-//     expect(listViewFinder, findsOneWidget);
-//   });
+  testWidgets('should display error message when state is error',
+      (WidgetTester tester) async {
+    // Arrange
+    const errorMessage = 'Failed to fetch data';
+    when(mockPopularMoviesBloc.state).thenReturn(const PopularMoviesState(
+      state: RequestState.error,
+      message: errorMessage,
+    ));
 
-//   testWidgets('Page should display text with message when Error',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.state).thenReturn(RequestState.error);
-//     when(mockNotifier.message).thenReturn('Error message');
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const PopularMoviesPage()));
+    await tester.pump();
 
-//     final textFinder = find.byKey(const Key('error_message'));
-
-//     await tester.pumpWidget(makeTestableWidget(const PopularMoviesPage()));
-
-//     expect(textFinder, findsOneWidget);
-//   });
-// }
+    // Assert
+    expect(find.byKey(const Key('error_message')), findsOneWidget);
+    expect(find.text(errorMessage), findsOneWidget);
+  });
+}

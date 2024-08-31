@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MovieHomePage extends StatefulWidget {
-  static const routeName = '/home-movie';
+  static const routeName = '/';
   const MovieHomePage({super.key});
 
   @override

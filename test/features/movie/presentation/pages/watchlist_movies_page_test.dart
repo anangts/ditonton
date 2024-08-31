@@ -1,85 +1,111 @@
-// import 'package:ditonton/common/state_enum.dart';
-// import 'package:ditonton/features/movie/domain/entities/movie.dart';
-// import 'package:ditonton/features/movie/presentation/provider/watchlist_movie_notifier.dart';
-// import 'package:ditonton/features/movie/presentation/pages/watchlist_movies_page.dart';
-// import 'package:ditonton/features/movie/presentation/widgets/movie_card_list.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:mockito/annotations.dart';
-// import 'package:mockito/mockito.dart';
-// import 'package:provider/provider.dart';
+import 'package:ditonton/common/state_enum.dart';
+import 'package:ditonton/features/movie/domain/entities/movie.dart';
+import 'package:ditonton/features/movie/presentation/bloc/bloc_export.dart';
+import 'package:ditonton/features/movie/presentation/pages/movie_watchlist_page.dart';
+import 'package:ditonton/features/movie/presentation/widgets/movie_card_list.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-// import 'watchlist_movies_page_test.mocks.dart';
+import 'watchlist_movies_page_test.mocks.dart';
 
-// @GenerateMocks([WatchlistMovieNotifier])
-// void main() {
-//   late MockWatchlistMovieNotifier mockNotifier;
+@GenerateMocks([MovieWatchlistBloc])
+void main() {
+  late MockMovieWatchlistBloc mockMovieWatchlistBloc;
 
-//   setUp(() {
-//     mockNotifier = MockWatchlistMovieNotifier();
-//   });
+  setUp(() {
+    mockMovieWatchlistBloc = MockMovieWatchlistBloc();
 
-//   Widget makeTestableWidget(Widget body) {
-//     return ChangeNotifierProvider<WatchlistMovieNotifier>.value(
-//       value: mockNotifier,
-//       child: MaterialApp(
-//         home: body,
-//       ),
-//     );
-//   }
+    // Stub the stream and close methods
+    when(mockMovieWatchlistBloc.stream).thenAnswer((_) => const Stream.empty());
+    when(mockMovieWatchlistBloc.state).thenReturn(const MovieWatchlistState());
+    when(mockMovieWatchlistBloc.close()).thenAnswer((_) async {
+      return;
+    });
+  });
 
-//   testWidgets('Page should display center progress bar when loading',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.watchlistState).thenReturn(RequestState.loading);
+  Widget makeTestableWidget(Widget body) {
+    return BlocProvider<MovieWatchlistBloc>.value(
+      value: mockMovieWatchlistBloc,
+      child: MaterialApp(
+        home: body,
+      ),
+    );
+  }
 
-//     final progressBarFinder = find.byType(CircularProgressIndicator);
-//     final centerFinder = find.byType(Center);
+  testWidgets('should display CircularProgressIndicator when state is loading',
+      (WidgetTester tester) async {
+    // Arrange
+    when(mockMovieWatchlistBloc.state).thenReturn(const MovieWatchlistState(
+      watchlistState: RequestState.loading,
+    ));
 
-//     await tester.pumpWidget(makeTestableWidget(const WatchlistMoviesPage()));
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const MovieWatchlistPage()));
+    await tester.pump();
 
-//     expect(centerFinder, findsOneWidget);
-//     expect(progressBarFinder, findsOneWidget);
-//   });
+    // Assert
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  });
 
-//   testWidgets('Page should display ListView when data is loaded',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.watchlistState).thenReturn(RequestState.loaded);
-//     when(mockNotifier.watchlistMovies).thenReturn(<Movie>[]);
+  testWidgets('should display ListView when state is loaded with movies',
+      (WidgetTester tester) async {
+    // Arrange
+    final movies = [
+      Movie(
+        id: 1,
+        title: 'Test Movie',
+        overview: 'Test Overview',
+        posterPath: '/test.jpg',
+      ),
+    ];
+    when(mockMovieWatchlistBloc.state).thenReturn(MovieWatchlistState(
+      watchlistState: RequestState.loaded,
+      watchlistMovies: movies,
+    ));
 
-//     final listViewFinder = find.byType(ListView);
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const MovieWatchlistPage()));
+    await tester.pump();
 
-//     await tester.pumpWidget(makeTestableWidget(const WatchlistMoviesPage()));
+    // Assert
+    expect(find.byType(ListView), findsOneWidget);
+    expect(find.byType(MovieCard), findsOneWidget);
+  });
 
-//     expect(listViewFinder, findsOneWidget);
-//   });
+  testWidgets('should display empty message when watchlist is empty',
+      (WidgetTester tester) async {
+    // Arrange
+    when(mockMovieWatchlistBloc.state).thenReturn(const MovieWatchlistState(
+      watchlistState: RequestState.loaded,
+      watchlistMovies: [],
+    ));
 
-//   testWidgets('Page should display text with message when Error',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.watchlistState).thenReturn(RequestState.error);
-//     when(mockNotifier.message).thenReturn('Error message');
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const MovieWatchlistPage()));
+    await tester.pump();
 
-//     final textFinder = find.byKey(const Key('error_message'));
+    // Assert
+    expect(find.text('Watchlist is empty'), findsOneWidget);
+  });
 
-//     await tester.pumpWidget(makeTestableWidget(const WatchlistMoviesPage()));
+  testWidgets('should display error message when state is error',
+      (WidgetTester tester) async {
+    // Arrange
+    const errorMessage = 'Failed to fetch data';
+    when(mockMovieWatchlistBloc.state).thenReturn(const MovieWatchlistState(
+      watchlistState: RequestState.error,
+      message: errorMessage,
+    ));
 
-//     expect(textFinder, findsOneWidget);
-//   });
-//   testWidgets('Page should display MovieCard when data is loaded with movies',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.watchlistState).thenReturn(RequestState.loaded);
-//     when(mockNotifier.watchlistMovies).thenReturn([
-//       Movie(
-//         id: 1,
-//         title: 'Movie Title',
-//         overview: 'Movie Overview',
-//         posterPath: '/poster_path.jpg',
-//       ),
-//     ]);
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const MovieWatchlistPage()));
+    await tester.pump();
 
-//     final movieCardFinder = find.byType(MovieCard);
-
-//     await tester.pumpWidget(makeTestableWidget(const WatchlistMoviesPage()));
-
-//     expect(movieCardFinder, findsOneWidget);
-//   });
-// }
+    // Assert
+    expect(find.byKey(const Key('error_message')), findsOneWidget);
+    expect(find.text(errorMessage), findsOneWidget);
+  });
+}

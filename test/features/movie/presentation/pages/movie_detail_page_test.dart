@@ -1,119 +1,133 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:mockito/mockito.dart';
-// import 'package:cached_network_image/cached_network_image.dart';
-// import 'package:ditonton/features/movie/presentation/bloc/bloc_export.dart';
-// import 'package:ditonton/features/movie/domain/entities/entites.dart';
-// import 'package:ditonton/common/state_enum.dart';
-// import 'package:ditonton/features/movie/presentation/pages/movie_detail_page.dart';
+import 'package:ditonton/features/movie/domain/entities/entites.dart';
+import 'package:ditonton/features/movie/presentation/bloc/bloc_export.dart';
+import 'package:ditonton/features/movie/presentation/pages/movie_detail_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ditonton/common/state_enum.dart';
+import 'movie_detail_page_test.mocks.dart';
 
-// class MockMovieDetailBloc extends Mock implements MovieDetailBloc {}
+@GenerateMocks([MovieDetailBloc])
+void main() {
+  late MockMovieDetailBloc mockMovieDetailBloc;
 
-// void main() {
-//   late MockMovieDetailBloc mockMovieDetailBloc;
+  setUp(() {
+    mockMovieDetailBloc = MockMovieDetailBloc();
 
-//   setUp(() {
-//     mockMovieDetailBloc = MockMovieDetailBloc();
-//   });
+    // Stub the stream and close methods
+    when(mockMovieDetailBloc.stream).thenAnswer((_) => const Stream.empty());
+    when(mockMovieDetailBloc.close()).thenAnswer((_) async {});
+  });
 
-//   Widget createWidgetUnderTest() {
-//     return BlocProvider<MovieDetailBloc>(
-//       create: (context) => mockMovieDetailBloc,
-//       child: const MaterialApp(
-//         home: MovieDetailPage(id: 1),
-//       ),
-//     );
-//   }
+  Widget makeTestableWidget(Widget body) {
+    return BlocProvider<MovieDetailBloc>(
+      create: (_) => mockMovieDetailBloc,
+      child: MaterialApp(
+        home: body,
+      ),
+    );
+  }
 
-//   testWidgets('Displays loading indicator while fetching data',
-//       (WidgetTester tester) async {
-//     // Arrange
-//     when(() => mockMovieDetailBloc.state).thenAnswer(
-//       (_) => const MovieDetailState(
-//         movieState: RequestState.loading,
-//         recommendationState: RequestState.loading,
-//         movie: null,
-//         movieRecommendations: [],
-//         isAddedToWatchlist: false,
-//         message: '',
-//       ),
-//     );
+  const testMovieDetail = MovieDetail(
+    originalTitle: 'Movie',
+    adult: false,
+    id: 1,
+    title: 'Test Movie',
+    overview: 'Test Overview',
+    posterPath: '/test.jpg',
+    voteAverage: 8.0,
+    voteCount: 100,
+    runtime: 120,
+    releaseDate: '2021-01-01',
+    genres: [Genre(id: 1, name: 'Action')],
+    backdropPath: '/test_backdrop.jpg',
+  );
 
-//     // Act
-//     await tester.pumpWidget(createWidgetUnderTest());
-//     await tester.pump(); // Rebuild the widget
+  final testMoviesList = [
+    Movie(
+      id: 1,
+      title: 'Test Movie',
+      overview: 'Test Overview',
+      posterPath: '/test.jpg',
+    ),
+  ];
+  testWidgets('should display CircularProgressIndicator when state is loading',
+      (WidgetTester tester) async {
+    // Arrange
+    when(mockMovieDetailBloc.state).thenReturn(const MovieDetailState(
+      movieState: RequestState.loading,
+    ));
+    when(mockMovieDetailBloc.stream).thenAnswer((_) => Stream.value(
+          const MovieDetailState(movieState: RequestState.loading),
+        ));
 
-//     // Assert
-//     expect(find.byType(CircularProgressIndicator), findsOneWidget);
-//   });
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
+    await tester.pump(); // Use pump instead of pumpAndSettle
 
-//   testWidgets('Displays movie details when data is loaded',
-//       (WidgetTester tester) async {
-//     // Arrange
-//     when(() => mockMovieDetailBloc.state).thenAnswer(
-//       (_) => MovieDetailState(
-//         movieState: RequestState.loaded,
-//         recommendationState: RequestState.loaded,
-//         movie: Movie(
-//             id: 1,
-//             title: 'Test Movie',
-//             posterPath: '/path.jpg',
-//             voteAverage: 7.0,
-//             genres: const [],
-//             runtime: 120,
-//             overview: 'Test Overview'),
-//         movieRecommendations: const [],
-//         isAddedToWatchlist: false,
-//         message: '',
-//       ),
-//     );
+    // Assert
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  });
 
-//     // Act
-//     await tester.pumpWidget(createWidgetUnderTest());
-//     await tester.pump(); // Rebuild the widget
+  testWidgets('should display error message when state is error',
+      (WidgetTester tester) async {
+    when(mockMovieDetailBloc.state).thenReturn(const MovieDetailState(
+      movieState: RequestState.error,
+      message: 'Failed to fetch data',
+    ));
 
-//     // Assert
-//     expect(find.text('Test Movie'), findsOneWidget);
-//     expect(find.text('Overview'), findsOneWidget);
-//   });
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
+    await tester.pumpAndSettle();
 
-//   testWidgets('Displays recommendations when recommendation data is loaded',
-//       (WidgetTester tester) async {
-//     // Arrange
-//     when(() => mockMovieDetailBloc.state).thenAnswer(
-//       (_) => MovieDetailState(
-//         movieState: RequestState.loaded,
-//         recommendationState: RequestState.loaded,
-//         movie: Movie(
-//             id: 1,
-//             title: 'Test Movie',
-//             posterPath: '/path.jpg',
-//             voteAverage: 7.0,
-//             genres: const [],
-//             runtime: 120,
-//             overview: 'Test Overview'),
-//         movieRecommendations: [
-//           Movie(
-//               id: 2,
-//               title: 'Recommended Movie',
-//               posterPath: '/recommendation.jpg',
-//               voteAverage: 8.0,
-//               genres: const [],
-//               runtime: 110,
-//               overview: 'Recommended Overview')
-//         ],
-//         isAddedToWatchlist: false,
-//         message: '',
-//       ),
-//     );
+    expect(find.text('Failed to fetch data'), findsOneWidget);
+  });
+  testWidgets('should display DetailContent when state is loaded',
+      (WidgetTester tester) async {
+    // Arrange
+    when(mockMovieDetailBloc.state).thenReturn(MovieDetailState(
+      movieState: RequestState.loaded,
+      movie: testMovieDetail,
+      movieRecommendations: testMoviesList,
+      recommendationState: RequestState.loaded,
+      isAddedToWatchlist: false,
+    ));
+    when(mockMovieDetailBloc.stream).thenAnswer((_) => Stream.value(
+          MovieDetailState(
+            movieState: RequestState.loaded,
+            movie: testMovieDetail,
+            movieRecommendations: testMoviesList,
+            recommendationState: RequestState.loaded,
+            isAddedToWatchlist: false,
+          ),
+        ));
 
-//     // Act
-//     await tester.pumpWidget(createWidgetUnderTest());
-//     await tester.pump(); // Rebuild the widget
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
-//     // Assert
-//     expect(find.byType(CachedNetworkImage), findsOneWidget);
-//     expect(find.text('Recommended Movie'), findsOneWidget);
-//   });
-// }
+    // Reduce the animation duration or skip animation
+    await tester.pump(const Duration(milliseconds: 500));
+
+    // Assert
+    expect(find.byType(DetailContent), findsOneWidget);
+    expect(find.text('Test Movie'), findsOneWidget);
+  });
+
+  testWidgets('should create the widget without errors',
+      (WidgetTester tester) async {
+    // Arrange
+    when(mockMovieDetailBloc.state).thenReturn(const MovieDetailState(
+      movieState: RequestState.loading,
+    ));
+    when(mockMovieDetailBloc.stream).thenAnswer((_) => Stream.value(
+          const MovieDetailState(movieState: RequestState.loading),
+        ));
+
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
+
+    // Assert
+    expect(find.byType(MovieDetailPage), findsOneWidget);
+  });
+}

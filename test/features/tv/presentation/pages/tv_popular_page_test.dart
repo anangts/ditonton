@@ -1,67 +1,95 @@
-// import 'package:ditonton/common/state_enum.dart';
-// import 'package:ditonton/features/tv/domain/entities/tv.dart';
-// import 'package:ditonton/features/tv/presentation/pages/tv_popular_page.dart';
-// import 'package:ditonton/features/tv/presentation/provider/tv_popular_notifier.dart';
+import 'package:ditonton/common/state_enum.dart';
+import 'package:ditonton/features/tv/presentation/bloc/bloc_export.dart';
+import 'package:ditonton/features/tv/presentation/pages/page.dart';
+import 'package:ditonton/features/tv/domain/entities/tv.dart';
+import 'package:ditonton/features/tv/presentation/widgets/tv_card_list.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-// import 'package:flutter/material.dart';
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:mockito/annotations.dart';
-// import 'package:mockito/mockito.dart';
-// import 'package:provider/provider.dart';
+import 'tv_popular_page_test.mocks.dart';
 
-// import 'tv_popular_page_test.mocks.dart';
+@GenerateMocks([TvPopularBloc])
+void main() {
+  late MockTvPopularBloc mockPopularTvBloc;
 
-// @GenerateMocks([PopularTvNotifier])
-// void main() {
-//   late MockPopularTvNotifier mockNotifier;
+  setUp(() {
+    mockPopularTvBloc = MockTvPopularBloc();
 
-//   setUp(() {
-//     mockNotifier = MockPopularTvNotifier();
-//   });
+    // Stub the stream and close methods
+    when(mockPopularTvBloc.stream).thenAnswer((_) => const Stream.empty());
+    when(mockPopularTvBloc.state).thenReturn(const TvPopularState());
+    when(mockPopularTvBloc.close()).thenAnswer((_) async {
+      return;
+    });
+  });
 
-//   Widget makeTestableWidget(Widget body) {
-//     return ChangeNotifierProvider<PopularTvNotifier>.value(
-//       value: mockNotifier,
-//       child: MaterialApp(
-//         home: body,
-//       ),
-//     );
-//   }
+  Widget makeTestableWidget(Widget body) {
+    return BlocProvider<TvPopularBloc>.value(
+      value: mockPopularTvBloc,
+      child: MaterialApp(
+        home: body,
+      ),
+    );
+  }
 
-//   testWidgets('Page should display center progress bar when loading',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.state).thenReturn(RequestState.loading);
+  testWidgets('should display CircularProgressIndicator when state is loading',
+      (WidgetTester tester) async {
+    // Arrange
+    when(mockPopularTvBloc.state).thenReturn(const TvPopularState(
+      state: RequestState.loading,
+    ));
 
-//     final progressBarFinder = find.byType(CircularProgressIndicator);
-//     final centerFinder = find.byType(Center);
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const TvPopularPage()));
+    await tester.pump();
 
-//     await tester.pumpWidget(makeTestableWidget(const PopularTvPage()));
+    // Assert
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  });
 
-//     expect(centerFinder, findsOneWidget);
-//     expect(progressBarFinder, findsOneWidget);
-//   });
+  testWidgets('should display ListView when state is loaded',
+      (WidgetTester tester) async {
+    // Arrange
+    final tvs = [
+      Tv(
+        id: 1,
+        name: 'Test Tv',
+        overview: 'Test Overview',
+        posterPath: '/test.jpg',
+      ),
+    ];
+    when(mockPopularTvBloc.state).thenReturn(TvPopularState(
+      state: RequestState.loaded,
+      tvs: tvs,
+    ));
 
-//   testWidgets('Page should display ListView when data is loaded',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.state).thenReturn(RequestState.loaded);
-//     when(mockNotifier.tvs).thenReturn(<Tv>[]);
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const TvPopularPage()));
+    await tester.pump();
 
-//     final listViewFinder = find.byType(ListView);
+    // Assert
+    expect(find.byType(ListView), findsOneWidget);
+    expect(find.byType(TvCard), findsOneWidget);
+  });
 
-//     await tester.pumpWidget(makeTestableWidget(const PopularTvPage()));
+  testWidgets('should display error message when state is error',
+      (WidgetTester tester) async {
+    // Arrange
+    const errorMessage = 'Failed to fetch data';
+    when(mockPopularTvBloc.state).thenReturn(const TvPopularState(
+      state: RequestState.error,
+      message: errorMessage,
+    ));
 
-//     expect(listViewFinder, findsOneWidget);
-//   });
+    // Act
+    await tester.pumpWidget(makeTestableWidget(const TvPopularPage()));
+    await tester.pump();
 
-//   testWidgets('Page should display text with message when Error',
-//       (WidgetTester tester) async {
-//     when(mockNotifier.state).thenReturn(RequestState.error);
-//     when(mockNotifier.message).thenReturn('Error message');
-
-//     final textFinder = find.byKey(const Key('error_message'));
-
-//     await tester.pumpWidget(makeTestableWidget(const PopularTvPage()));
-
-//     expect(textFinder, findsOneWidget);
-//   });
-// }
+    // Assert
+    expect(find.byKey(const Key('error_message')), findsOneWidget);
+    expect(find.text(errorMessage), findsOneWidget);
+  });
+}

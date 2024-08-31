@@ -61,7 +61,7 @@ class _TvHomePageState extends State<TvHomePage> {
               leading: const Icon(Icons.save_alt),
               title: const Text('Watchlist Tv'),
               onTap: () {
-                Navigator.pushNamed(context, WatchlistTvPage.routeName);
+                Navigator.pushNamed(context, MovieWatchlistPage.routeName);
               },
             ),
             ListTile(

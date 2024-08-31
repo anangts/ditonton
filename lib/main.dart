@@ -1,5 +1,5 @@
 import 'package:ditonton/common/constants.dart';
-import 'package:ditonton/common/utils.dart';  
+import 'package:ditonton/common/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ditonton/injection.dart' as di;
@@ -9,7 +9,6 @@ import 'features/movie/presentation/bloc/bloc_export.dart';
 import 'features/movie/presentation/pages/page.dart';
 import 'features/tv/presentation/bloc/bloc_export.dart';
 import 'features/tv/presentation/pages/page.dart';
- 
 
 void main() {
   di.init();
@@ -38,7 +37,7 @@ class MyApp extends StatelessWidget {
           create: (_) => di.locator<PopularMoviesBloc>(),
         ),
         BlocProvider(
-          create: (_) => di.locator<WatchlistMovieBloc>(),
+          create: (_) => di.locator<MovieWatchlistBloc>(),
         ),
         // Tv Series
         BlocProvider(
@@ -68,27 +67,28 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: kRichBlack,
           textTheme: kTextTheme,
         ),
-        home: const HomeMoviePage(),
+        home: const MovieHomePage(),
         navigatorObservers: [routeObserver],
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
-            case HomeMoviePage.routeName:
-              return MaterialPageRoute(builder: (_) => const HomeMoviePage());
+            case MovieHomePage.routeName:
+              return MaterialPageRoute(builder: (_) => const MovieHomePage());
             case PopularMoviesPage.routeName:
               return CupertinoPageRoute(
                   builder: (_) => const PopularMoviesPage());
-            case TopRatedMoviesPage.routeName:
+            case MovieTopRatedPage.routeName:
               return CupertinoPageRoute(
-                  builder: (_) => const TopRatedMoviesPage());
+                  builder: (_) => const MovieTopRatedPage());
             case MovieDetailPage.routeName:
               final id = settings.arguments as int;
               return MaterialPageRoute(
                   builder: (_) => MovieDetailPage(id: id), settings: settings);
-            case SearchPage.routeName:
-              return CupertinoPageRoute(builder: (_) => const SearchPage());
-            case WatchlistMoviesPage.routeName:
+            case MovieSearchPage.routeName:
+              return CupertinoPageRoute(
+                  builder: (_) => const MovieSearchPage());
+            case MovieWatchlistPage.routeName:
               return MaterialPageRoute(
-                  builder: (_) => const WatchlistMoviesPage());
+                  builder: (_) => const MovieWatchlistPage());
             //TV Series
             case TvHomePage.routeName:
               return MaterialPageRoute(builder: (_) => const TvHomePage());

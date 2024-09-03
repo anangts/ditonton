@@ -7,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'movie_home_page_test.mocks.dart';
 
 @GenerateMocks([MovieListBloc])
@@ -38,12 +37,12 @@ void main() {
       (WidgetTester tester) async {
     // Arrange
     when(mockMovieListBloc.state).thenReturn(const MovieListState(
-      nowPlayingState: RequestState.loading,
-      nowPlayingMovies: [],
-      popularMoviesState: RequestState.loading,
-      popularMovies: [],
-      topRatedMoviesState: RequestState.loading,
-      topRatedMovies: [],
+      movieNowPlayingState: RequestState.loading,
+      movieNowPlaying: [],
+      moviePopularState: RequestState.loading,
+      moviePopular: [],
+      movieTopRatedState: RequestState.loading,
+      movieTopRated: [],
     ));
 
     // Act
@@ -66,12 +65,12 @@ void main() {
       ),
     ];
     when(mockMovieListBloc.state).thenReturn(MovieListState(
-      nowPlayingState: RequestState.loaded,
-      nowPlayingMovies: movies,
-      popularMoviesState: RequestState.loaded,
-      popularMovies: movies,
-      topRatedMoviesState: RequestState.loaded,
-      topRatedMovies: movies,
+      movieNowPlayingState: RequestState.loaded,
+      movieNowPlaying: movies,
+      moviePopularState: RequestState.loaded,
+      moviePopular: movies,
+      movieTopRatedState: RequestState.loaded,
+      movieTopRated: movies,
     ));
 
     // Act
@@ -86,12 +85,12 @@ void main() {
       (WidgetTester tester) async {
     // Arrange
     when(mockMovieListBloc.state).thenReturn(const MovieListState(
-      nowPlayingState: RequestState.error,
-      nowPlayingMovies: [],
-      popularMoviesState: RequestState.error,
-      popularMovies: [],
-      topRatedMoviesState: RequestState.error,
-      topRatedMovies: [],
+      movieNowPlayingState: RequestState.error,
+      movieNowPlaying: [],
+      moviePopularState: RequestState.error,
+      moviePopular: [],
+      movieTopRatedState: RequestState.error,
+      movieTopRated: [],
     ));
 
     // Act

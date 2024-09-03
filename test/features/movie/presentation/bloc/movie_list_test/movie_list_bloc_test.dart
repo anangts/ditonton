@@ -56,10 +56,10 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchNowPlayingMovies()),
       expect: () => [
-        const MovieListState(nowPlayingState: RequestState.loading),
+        const MovieListState(movieNowPlayingState: RequestState.loading),
         MovieListState(
-          nowPlayingState: RequestState.loaded,
-          nowPlayingMovies: [
+          movieNowPlayingState: RequestState.loaded,
+          movieNowPlaying: [
             Movie(
                 id: 1,
                 title: 'Test Movie',
@@ -82,9 +82,9 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchNowPlayingMovies()),
       expect: () => [
-        const MovieListState(nowPlayingState: RequestState.loading),
+        const MovieListState(movieNowPlayingState: RequestState.loading),
         const MovieListState(
-          nowPlayingState: RequestState.error,
+          movieNowPlayingState: RequestState.error,
           message: 'Error',
         ),
       ],
@@ -107,10 +107,10 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchPopularMovies()),
       expect: () => [
-        const MovieListState(popularMoviesState: RequestState.loading),
+        const MovieListState(moviePopularState: RequestState.loading),
         MovieListState(
-          popularMoviesState: RequestState.loaded,
-          popularMovies: [
+          moviePopularState: RequestState.loaded,
+          moviePopular: [
             Movie(
                 id: 1,
                 title: 'Test Movie',
@@ -133,9 +133,9 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchPopularMovies()),
       expect: () => [
-        const MovieListState(popularMoviesState: RequestState.loading),
+        const MovieListState(moviePopularState: RequestState.loading),
         const MovieListState(
-          popularMoviesState: RequestState.error,
+          moviePopularState: RequestState.error,
           message: 'Error',
         ),
       ],
@@ -158,10 +158,10 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchTopRatedMovies()),
       expect: () => [
-        const MovieListState(topRatedMoviesState: RequestState.loading),
+        const MovieListState(movieTopRatedState: RequestState.loading),
         MovieListState(
-          topRatedMoviesState: RequestState.loaded,
-          topRatedMovies: [
+          movieTopRatedState: RequestState.loaded,
+          movieTopRated: [
             Movie(
                 id: 1,
                 title: 'Test Movie',
@@ -184,9 +184,9 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchTopRatedMovies()),
       expect: () => [
-        const MovieListState(topRatedMoviesState: RequestState.loading),
+        const MovieListState(movieTopRatedState: RequestState.loading),
         const MovieListState(
-          topRatedMoviesState: RequestState.error,
+          movieTopRatedState: RequestState.error,
           message: 'Error',
         ),
       ],

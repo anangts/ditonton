@@ -19,22 +19,22 @@ void main() {
     test('supports value comparison', () {
       expect(
         MovieListState(
-          nowPlayingMovies: nowPlayingMovies,
-          nowPlayingState: RequestState.loaded,
-          popularMovies: popularMovies,
-          popularMoviesState: RequestState.loaded,
-          topRatedMovies: topRatedMovies,
-          topRatedMoviesState: RequestState.loaded,
+          movieNowPlaying: nowPlayingMovies,
+          movieNowPlayingState: RequestState.loaded,
+          moviePopular: popularMovies,
+          moviePopularState: RequestState.loaded,
+          movieTopRated: topRatedMovies,
+          movieTopRatedState: RequestState.loaded,
           message: message,
         ),
         equals(
           MovieListState(
-            nowPlayingMovies: nowPlayingMovies,
-            nowPlayingState: RequestState.loaded,
-            popularMovies: popularMovies,
-            popularMoviesState: RequestState.loaded,
-            topRatedMovies: topRatedMovies,
-            topRatedMoviesState: RequestState.loaded,
+            movieNowPlaying: nowPlayingMovies,
+            movieNowPlayingState: RequestState.loaded,
+            moviePopular: popularMovies,
+            moviePopularState: RequestState.loaded,
+            movieTopRated: topRatedMovies,
+            movieTopRatedState: RequestState.loaded,
             message: message,
           ),
         ),
@@ -43,12 +43,12 @@ void main() {
 
     test('copyWith works correctly', () {
       final state = MovieListState(
-        nowPlayingMovies: nowPlayingMovies,
-        nowPlayingState: RequestState.loaded,
-        popularMovies: popularMovies,
-        popularMoviesState: RequestState.loaded,
-        topRatedMovies: topRatedMovies,
-        topRatedMoviesState: RequestState.loaded,
+        movieNowPlaying: nowPlayingMovies,
+        movieNowPlayingState: RequestState.loaded,
+        moviePopular: popularMovies,
+        moviePopularState: RequestState.loaded,
+        movieTopRated: topRatedMovies,
+        movieTopRatedState: RequestState.loaded,
         message: message,
       );
 
@@ -57,23 +57,23 @@ void main() {
         message: 'New Message',
       );
 
-      expect(newState.nowPlayingMovies, []);
-      expect(newState.nowPlayingState, RequestState.loaded);
-      expect(newState.popularMovies, popularMovies);
-      expect(newState.popularMoviesState, RequestState.loaded);
-      expect(newState.topRatedMovies, topRatedMovies);
-      expect(newState.topRatedMoviesState, RequestState.loaded);
+      expect(newState.movieNowPlaying, []);
+      expect(newState.movieNowPlayingState, RequestState.loaded);
+      expect(newState.moviePopular, popularMovies);
+      expect(newState.moviePopularState, RequestState.loaded);
+      expect(newState.movieTopRated, topRatedMovies);
+      expect(newState.movieTopRatedState, RequestState.loaded);
       expect(newState.message, 'New Message');
     });
 
     test('props are correct', () {
       final state = MovieListState(
-        nowPlayingMovies: nowPlayingMovies,
-        nowPlayingState: RequestState.loaded,
-        popularMovies: popularMovies,
-        popularMoviesState: RequestState.loaded,
-        topRatedMovies: topRatedMovies,
-        topRatedMoviesState: RequestState.loaded,
+        movieNowPlaying: nowPlayingMovies,
+        movieNowPlayingState: RequestState.loaded,
+        moviePopular: popularMovies,
+        moviePopularState: RequestState.loaded,
+        movieTopRated: topRatedMovies,
+        movieTopRatedState: RequestState.loaded,
         message: message,
       );
 

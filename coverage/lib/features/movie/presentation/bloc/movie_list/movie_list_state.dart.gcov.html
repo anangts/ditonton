@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-09-03 11:47:02</td>
+            <td class="headerValue">2024-09-03 20:51:21</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -61,21 +61,21 @@
 <a name="3"><span class="lineNum">       3 </span>            : import 'package:ditonton/common/state_enum.dart';</a>
 <a name="4"><span class="lineNum">       4 </span>            : </a>
 <a name="5"><span class="lineNum">       5 </span>            : class MovieListState extends Equatable {</a>
-<a name="6"><span class="lineNum">       6 </span>            :   final List&lt;Movie&gt; nowPlayingMovies;</a>
-<a name="7"><span class="lineNum">       7 </span>            :   final RequestState nowPlayingState;</a>
-<a name="8"><span class="lineNum">       8 </span>            :   final List&lt;Movie&gt; popularMovies;</a>
-<a name="9"><span class="lineNum">       9 </span>            :   final RequestState popularMoviesState;</a>
-<a name="10"><span class="lineNum">      10 </span>            :   final List&lt;Movie&gt; topRatedMovies;</a>
-<a name="11"><span class="lineNum">      11 </span>            :   final RequestState topRatedMoviesState;</a>
+<a name="6"><span class="lineNum">       6 </span>            :   final List&lt;Movie&gt; movieNowPlaying;</a>
+<a name="7"><span class="lineNum">       7 </span>            :   final RequestState movieNowPlayingState;</a>
+<a name="8"><span class="lineNum">       8 </span>            :   final List&lt;Movie&gt; moviePopular;</a>
+<a name="9"><span class="lineNum">       9 </span>            :   final RequestState moviePopularState;</a>
+<a name="10"><span class="lineNum">      10 </span>            :   final List&lt;Movie&gt; movieTopRated;</a>
+<a name="11"><span class="lineNum">      11 </span>            :   final RequestState movieTopRatedState;</a>
 <a name="12"><span class="lineNum">      12 </span>            :   final String message;</a>
 <a name="13"><span class="lineNum">      13 </span>            : </a>
 <a name="14"><span class="lineNum">      14 </span><span class="lineCov">         55 :   const MovieListState({</span></a>
-<a name="15"><span class="lineNum">      15 </span>            :     this.nowPlayingMovies = const [],</a>
-<a name="16"><span class="lineNum">      16 </span>            :     this.nowPlayingState = RequestState.empty,</a>
-<a name="17"><span class="lineNum">      17 </span>            :     this.popularMovies = const [],</a>
-<a name="18"><span class="lineNum">      18 </span>            :     this.popularMoviesState = RequestState.empty,</a>
-<a name="19"><span class="lineNum">      19 </span>            :     this.topRatedMovies = const [],</a>
-<a name="20"><span class="lineNum">      20 </span>            :     this.topRatedMoviesState = RequestState.empty,</a>
+<a name="15"><span class="lineNum">      15 </span>            :     this.movieNowPlaying = const [],</a>
+<a name="16"><span class="lineNum">      16 </span>            :     this.movieNowPlayingState = RequestState.empty,</a>
+<a name="17"><span class="lineNum">      17 </span>            :     this.moviePopular = const [],</a>
+<a name="18"><span class="lineNum">      18 </span>            :     this.moviePopularState = RequestState.empty,</a>
+<a name="19"><span class="lineNum">      19 </span>            :     this.movieTopRated = const [],</a>
+<a name="20"><span class="lineNum">      20 </span>            :     this.movieTopRatedState = RequestState.empty,</a>
 <a name="21"><span class="lineNum">      21 </span>            :     this.message = '',</a>
 <a name="22"><span class="lineNum">      22 </span>            :   });</a>
 <a name="23"><span class="lineNum">      23 </span>            : </a>
@@ -89,24 +89,24 @@
 <a name="31"><span class="lineNum">      31 </span>            :     String? message,</a>
 <a name="32"><span class="lineNum">      32 </span>            :   }) {</a>
 <a name="33"><span class="lineNum">      33 </span><span class="lineCov">          2 :     return MovieListState(</span></a>
-<a name="34"><span class="lineNum">      34 </span><span class="lineCov">          1 :       nowPlayingMovies: nowPlayingMovies ?? this.nowPlayingMovies,</span></a>
-<a name="35"><span class="lineNum">      35 </span><span class="lineCov">          2 :       nowPlayingState: nowPlayingState ?? this.nowPlayingState,</span></a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          2 :       popularMovies: popularMovies ?? this.popularMovies,</span></a>
-<a name="37"><span class="lineNum">      37 </span><span class="lineCov">          2 :       popularMoviesState: popularMoviesState ?? this.popularMoviesState,</span></a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          2 :       topRatedMovies: topRatedMovies ?? this.topRatedMovies,</span></a>
-<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          2 :       topRatedMoviesState: topRatedMoviesState ?? this.topRatedMoviesState,</span></a>
+<a name="34"><span class="lineNum">      34 </span><span class="lineCov">          1 :       movieNowPlaying: nowPlayingMovies ?? movieNowPlaying,</span></a>
+<a name="35"><span class="lineNum">      35 </span><span class="lineCov">          2 :       movieNowPlayingState: nowPlayingState ?? movieNowPlayingState,</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          2 :       moviePopular: popularMovies ?? moviePopular,</span></a>
+<a name="37"><span class="lineNum">      37 </span><span class="lineCov">          2 :       moviePopularState: popularMoviesState ?? moviePopularState,</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          2 :       movieTopRated: topRatedMovies ?? movieTopRated,</span></a>
+<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          2 :       movieTopRatedState: topRatedMoviesState ?? movieTopRatedState,</span></a>
 <a name="40"><span class="lineNum">      40 </span><span class="lineCov">          1 :       message: message ?? this.message,</span></a>
 <a name="41"><span class="lineNum">      41 </span>            :     );</a>
 <a name="42"><span class="lineNum">      42 </span>            :   }</a>
 <a name="43"><span class="lineNum">      43 </span>            : </a>
 <a name="44"><span class="lineNum">      44 </span><span class="lineCov">          2 :   @override</span></a>
 <a name="45"><span class="lineNum">      45 </span><span class="lineCov">          2 :   List&lt;Object?&gt; get props =&gt; [</span></a>
-<a name="46"><span class="lineNum">      46 </span><span class="lineCov">          2 :         nowPlayingMovies,</span></a>
-<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          2 :         nowPlayingState,</span></a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          2 :         popularMovies,</span></a>
-<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          2 :         popularMoviesState,</span></a>
-<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          2 :         topRatedMovies,</span></a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          2 :         topRatedMoviesState,</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineCov">          2 :         movieNowPlaying,</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineCov">          2 :         movieNowPlayingState,</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          2 :         moviePopular,</span></a>
+<a name="49"><span class="lineNum">      49 </span><span class="lineCov">          2 :         moviePopularState,</span></a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineCov">          2 :         movieTopRated,</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          2 :         movieTopRatedState,</span></a>
 <a name="52"><span class="lineNum">      52 </span><span class="lineCov">          2 :         message,</span></a>
 <a name="53"><span class="lineNum">      53 </span>            :       ];</a>
 <a name="54"><span class="lineNum">      54 </span>            : }</a>

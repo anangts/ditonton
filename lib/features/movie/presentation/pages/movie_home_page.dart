@@ -36,8 +36,6 @@ class _MovieHomePageState extends State<MovieHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-
     return Scaffold(
       drawer: Drawer(
         child: Column(
@@ -84,23 +82,6 @@ class _MovieHomePageState extends State<MovieHomePage> {
               leading: const Icon(Icons.info_outline),
               title: const Text('About'),
             ),
-            ListTile(
-              onTap: () {
-                // Uncomment the following line to test Crashlytics
-                FirebaseCrashlytics.instance.crash();
-
-                // Uncomment the following line to test analytic
-                analytics.logEvent(
-                  name: 'button_click',
-                  parameters: <String, Object>{
-                    'button_name': 'example_button',
-                  },
-                );
-                Navigator.pop(context);
-              },
-              leading: const Icon(Icons.info_outline),
-              title: const Text('Test Crashlytics and analityc'),
-            ),
           ],
         ),
       ),
@@ -109,6 +90,18 @@ class _MovieHomePageState extends State<MovieHomePage> {
         actions: [
           IconButton(
             onPressed: () {
+              final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+              // Uncomment the following line to test Crashlytics
+              // FirebaseCrashlytics.instance.crash();
+
+              // Uncomment the following line to test analytic
+              // analytics.logEvent(
+              //   name: 'button_click',
+              //   parameters: <String, Object>{
+              //     'button_name': 'example_button',
+              //   },
+              // );
               Navigator.pushNamed(context, MovieSearchPage.routeName);
             },
             icon: const Icon(Icons.search),
@@ -136,12 +129,13 @@ class _MovieHomePageState extends State<MovieHomePage> {
               ),
               BlocBuilder<MovieListBloc, MovieListState>(
                 builder: (context, state) {
-                  if (state.nowPlayingState == RequestState.loading) {
+                  if (state.movieNowPlayingState == RequestState.loading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  } else if (state.nowPlayingState == RequestState.loaded) {
-                    return MovieList(state.nowPlayingMovies);
+                  } else if (state.movieNowPlayingState ==
+                      RequestState.loaded) {
+                    return MovieList(state.movieNowPlaying);
                   } else {
                     return const Text('Failed');
                   }
@@ -154,12 +148,12 @@ class _MovieHomePageState extends State<MovieHomePage> {
               ),
               BlocBuilder<MovieListBloc, MovieListState>(
                 builder: (context, state) {
-                  if (state.popularMoviesState == RequestState.loading) {
+                  if (state.moviePopularState == RequestState.loading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  } else if (state.popularMoviesState == RequestState.loaded) {
-                    return MovieList(state.popularMovies);
+                  } else if (state.moviePopularState == RequestState.loaded) {
+                    return MovieList(state.moviePopular);
                   } else {
                     return const Text('Failed');
                   }
@@ -172,12 +166,12 @@ class _MovieHomePageState extends State<MovieHomePage> {
               ),
               BlocBuilder<MovieListBloc, MovieListState>(
                 builder: (context, state) {
-                  if (state.topRatedMoviesState == RequestState.loading) {
+                  if (state.movieTopRatedState == RequestState.loading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  } else if (state.topRatedMoviesState == RequestState.loaded) {
-                    return MovieList(state.topRatedMovies);
+                  } else if (state.movieTopRatedState == RequestState.loaded) {
+                    return MovieList(state.movieTopRated);
                   } else {
                     return const Text('Failed');
                   }

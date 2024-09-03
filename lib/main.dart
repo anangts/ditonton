@@ -16,16 +16,15 @@ import 'features/tv/presentation/bloc/bloc_export.dart';
 import 'features/tv/presentation/pages/page.dart';
 
 void main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Ensure Flutter bindings are initialized
+  WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  di.init(); // Initialize dependencies
+  di.init();
 
-  runApp(const MyApp()); // Run your app
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -73,7 +72,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Ditonton',
         theme: ThemeData.dark().copyWith(
           colorScheme: kColorScheme,
           primaryColor: kRichBlack,

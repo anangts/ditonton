@@ -2,7 +2,7 @@
 // in ditonton/test/features/movie/presentation/bloc/movie_list_test/movie_list_bloc_test.dart.
 // Do not manually edit this file.
 
-// ignore_for_file: no_leading_underscores_for_library_prefixes, must_be_immutable
+// ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i5;
 
 import 'package:dartz/dartz.dart' as _i3;

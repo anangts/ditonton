@@ -1,5 +1,6 @@
 import 'package:ditonton/features/tv/data/datasources/db/tv_database_helper.dart';
 import 'package:ditonton/features/tv/data/models/tv_table.dart';
+import 'package:ditonton/features/tv/data/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -24,8 +25,8 @@ void main() {
     // Arrange
     const tv = TvTable(
       id: 1,
-      name: 'Tv Name',
-      posterPath: 'assets/circle-g.png',
+      name: 'Tv Title',
+      posterPath: 'assets/logo/circle-g.png',
       overview: 'Tv Overview',
     );
 
@@ -40,8 +41,8 @@ void main() {
     // Arrange
     const tv = TvTable(
       id: 1,
-      name: 'Tv Name',
-      posterPath: 'assets/circle-g.png',
+      name: 'Tv Title',
+      posterPath: 'assets/logo/circle-g.png',
       overview: 'Tv Overview',
     );
 
@@ -55,22 +56,22 @@ void main() {
     expect(result, 1); // The result should be the number of rows affected
   });
 
-  test('Get watchlist tvs', () async {
+  test('Get watchlist tv', () async {
     // Arrange
     const tv1 = TvTable(
       id: 1,
-      name: 'Tv Name 1',
-      posterPath: 'assets/circle-g.png',
+      name: 'Tv Title 1',
+      posterPath: 'assets/logo/circle-g.png',
       overview: 'Tv Overview 1',
     );
     const tv2 = TvTable(
       id: 2,
-      name: 'Tv Name 2',
-      posterPath: 'assets/circle-g.png',
+      name: 'Tv Title 2',
+      posterPath: 'assets/logo/circle-g.png',
       overview: 'Tv Overview 2',
     );
 
-    // Insert tvs
+    // Insert tv
     await databaseHelper.insertWatchlist(tv1);
     await databaseHelper.insertWatchlist(tv2);
 
@@ -79,16 +80,16 @@ void main() {
 
     // Assert
     expect(result.length, 2);
-    expect(result[0]['name'], 'Tv Name 1');
-    expect(result[1]['name'], 'Tv Name 2');
+    expect(result[0]['name'], 'Tv Title 1');
+    expect(result[1]['name'], 'Tv Title 2');
   });
 
   test('Insert duplicate tv should fail', () async {
     // Arrange
     const tv = TvTable(
       id: 1,
-      name: 'Tv Name',
-      posterPath: 'assets/circle-g.png',
+      name: 'Tv Title',
+      posterPath: 'assets/logo/circle-g.png',
       overview: 'Tv Overview',
     );
 
@@ -115,7 +116,7 @@ void main() {
     const tv = TvTable(
       id: 999, // Assuming this ID does not exist
       name: 'Non-Existing Tv',
-      posterPath: 'assets/circle-g.png',
+      posterPath: 'assets/logo/circle-g.png',
       overview: 'Non-Existing Overview',
     );
 
@@ -130,8 +131,8 @@ void main() {
     // Arrange
     const tv = TvTable(
       id: 1,
-      name: 'Tv Name',
-      posterPath: 'assets/circle-g.png',
+      name: 'Tv Title',
+      posterPath: 'assets/logo/circle-g.png',
       overview: 'Tv Overview',
     );
 
@@ -143,7 +144,7 @@ void main() {
 
     // Assert
     expect(result, isNotNull);
-    expect(result!['name'], 'Tv Name');
+    expect(result!['name'], 'Tv Title');
   });
 
   test('Get empty watchlist should return empty list', () async {
@@ -154,18 +155,18 @@ void main() {
     expect(result, isEmpty); // The result should be an empty list
   });
 
-  test('Insert and remove multiple tvs', () async {
+  test('Insert and remove multiple tv', () async {
     // Arrange
     const tv1 = TvTable(
       id: 1,
-      name: 'Tv Name 1',
-      posterPath: 'assets/circle-g.png',
+      name: 'Tv Title 1',
+      posterPath: 'assets/logo/circle-g.png',
       overview: 'Tv Overview 1',
     );
     const tv2 = TvTable(
       id: 2,
-      name: 'Tv Name 2',
-      posterPath: 'assets/circle-g.png',
+      name: 'Tv Title 2',
+      posterPath: 'assets/logo/circle-g.png',
       overview: 'Tv Overview 2',
     );
 

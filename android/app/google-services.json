@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "538518434512",
-    "project_id": "dicodingexpert",
-    "storage_bucket": "dicodingexpert.appspot.com"
+    "project_number": "760186166465",
+    "project_id": "ditontone-8ede3",
+    "storage_bucket": "ditontone-8ede3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:538518434512:android:6326bcaa4448ff9aef64d5",
+        "mobilesdk_app_id": "1:760186166465:android:4354af510d39a725eb0840",
         "android_client_info": {
           "package_name": "com.ditontone.app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDl8QjF9BMx7OSoG7gzFKNjb0-QemrUAE8"
+          "current_key": "AIzaSyCZM7ezn4vJ_E-ypWZfF3uI5vYbuuuN19E"
         }
       ],
       "services": {

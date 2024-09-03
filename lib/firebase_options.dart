@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDl8QjF9BMx7OSoG7gzFKNjb0-QemrUAE8',
-    appId: '1:538518434512:android:6326bcaa4448ff9aef64d5',
-    messagingSenderId: '538518434512',
-    projectId: 'dicodingexpert',
-    storageBucket: 'dicodingexpert.appspot.com',
+    apiKey: 'AIzaSyCZM7ezn4vJ_E-ypWZfF3uI5vYbuuuN19E',
+    appId: '1:760186166465:android:4354af510d39a725eb0840',
+    messagingSenderId: '760186166465',
+    projectId: 'ditontone-8ede3',
+    storageBucket: 'ditontone-8ede3.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCR76ZMIPXNDVxVmlFMBGcvuykJEgsPhes',
-    appId: '1:538518434512:ios:755b356c65a959fbef64d5',
-    messagingSenderId: '538518434512',
-    projectId: 'dicodingexpert',
-    storageBucket: 'dicodingexpert.appspot.com',
+    apiKey: 'AIzaSyDTzjq8dRN7F7jzNxpjzwO4pIGqe9Rf_k4',
+    appId: '1:760186166465:ios:23073212d9abe3cceb0840',
+    messagingSenderId: '760186166465',
+    projectId: 'ditontone-8ede3',
+    storageBucket: 'ditontone-8ede3.appspot.com',
     iosBundleId: 'com.ditontone.app',
   );
+
 }

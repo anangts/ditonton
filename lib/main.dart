@@ -1,12 +1,14 @@
+// ignore_for_file: unused_import
+
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ditonton/injection.dart' as di;
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'features/movie/presentation/bloc/bloc_export.dart';
 import 'features/movie/presentation/pages/page.dart';
 import 'features/tv/presentation/bloc/bloc_export.dart';

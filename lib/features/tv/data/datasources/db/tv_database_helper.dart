@@ -20,13 +20,7 @@ class TvDatabaseHelper {
 
   static const String _tblWatchlist = 'watchlistTv';
 
-  // Future<Database> _initDb() async {
-  //   final path = await getDatabasesPath();
-  //   final databasePath = '$path/ditontonTv.db';
-
-  //   var db = await openDatabase(databasePath, version: 1, onCreate: _onCreate);
-  //   return db;
-  // }
+  
 
   Future<Database> _initDb() async {
     final path = await getDatabasesPath();

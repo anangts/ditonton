@@ -5,6 +5,8 @@ import 'package:ditonton/features/movie/presentation/bloc/bloc_export.dart';
 import 'package:ditonton/features/movie/presentation/pages/page.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/features/tv/presentation/pages/page.dart';
+// ignore: unused_import
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -160,6 +160,7 @@ class MockTvGetTopRated extends _i1.Mock implements _i9.TvGetTopRated {
 /// A class which mocks [Failure].
 ///
 /// See the documentation for Mockito's code generation for more information.
+// ignore: must_be_immutable
 class MockFailure extends _i1.Mock implements _i6.Failure {
   MockFailure() {
     _i1.throwOnMissingStub(this);

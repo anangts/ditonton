@@ -1,5 +1,7 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
+import 'package:ditonton/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ditonton/injection.dart' as di;
@@ -10,9 +12,20 @@ import 'features/movie/presentation/pages/page.dart';
 import 'features/tv/presentation/bloc/bloc_export.dart';
 import 'features/tv/presentation/pages/page.dart';
 
-void main() {
-  di.init();
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Ensure Flutter bindings are initialized
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  di.init(); // Initialize dependencies
+
+  // Uncomment the following line to test Crashlytics
+  // FirebaseCrashlytics.instance.crash();
+
+  runApp(const MyApp()); // Run your app
 }
 
 class MyApp extends StatelessWidget {

@@ -3,6 +3,7 @@
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/firebase_options.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,9 +24,6 @@ void main() async {
   );
 
   di.init(); // Initialize dependencies
-
-  // Uncomment the following line to test Crashlytics
-  // FirebaseCrashlytics.instance.crash();
 
   runApp(const MyApp()); // Run your app
 }

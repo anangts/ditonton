@@ -5,6 +5,7 @@ import 'package:ditonton/features/movie/presentation/bloc/bloc_export.dart';
 import 'package:ditonton/features/movie/presentation/pages/page.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/features/tv/presentation/pages/page.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 // ignore: unused_import
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,8 @@ class _MovieHomePageState extends State<MovieHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
     return Scaffold(
       drawer: Drawer(
         child: Column(
@@ -80,6 +83,23 @@ class _MovieHomePageState extends State<MovieHomePage> {
               },
               leading: const Icon(Icons.info_outline),
               title: const Text('About'),
+            ),
+            ListTile(
+              onTap: () {
+                // Uncomment the following line to test Crashlytics
+                FirebaseCrashlytics.instance.crash();
+
+                // Uncomment the following line to test analytic
+                analytics.logEvent(
+                  name: 'button_click',
+                  parameters: <String, Object>{
+                    'button_name': 'example_button',
+                  },
+                );
+                Navigator.pop(context);
+              },
+              leading: const Icon(Icons.info_outline),
+              title: const Text('Test Crashlytics and analityc'),
             ),
           ],
         ),

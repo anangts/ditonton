@@ -1,6 +1,6 @@
 # ditonton
 
-[![Codemagic build status](https://api.codemagic.io/apps/66d6c76e0becf10eb5ff9a3e/test_and_build/status_badge.svg)](https://codemagic.io/app/66d6c76e0becf10eb5ff9a3e/build/66d71580863a114583688a96)
+[![Codemagic build status](https://api.codemagic.io/apps/66d6c76e0becf10eb5ff9a3e/66d71580863a114583688a96/status_badge.svg)](https://codemagic.io/app/66d6c76e0becf10eb5ff9a3e/66d71580863a114583688a96/latest_build)
 
 **ditonton** is a sleek and user-friendly mobile application that provides up-to-date information about movies and TV series using data from The Movie Database (TMDb) API. Whether you're a casual viewer or a dedicated cinephile, this app is your go-to resource for discovering new films, exploring popular TV shows, and tracking your favorites.
 

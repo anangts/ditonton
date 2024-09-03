@@ -1,8 +1,5 @@
 # ditonton
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/saptrian/ditonton/build.yml?branch=main)](https://github.com/saptrian/ditonton/actions)
-[![Test Coverage](https://img.shields.io/coveralls/github/saptrian/ditonton)](https://coveralls.io/github/saptrian/ditonton) 
-
 **ditonton** is a sleek and user-friendly mobile application that provides up-to-date information about movies and TV series using data from The Movie Database (TMDb) API. Whether you're a casual viewer or a dedicated cinephile, this app is your go-to resource for discovering new films, exploring popular TV shows, and tracking your favorites.
 
 ![App Screenshot](./assets/img/movie.png)

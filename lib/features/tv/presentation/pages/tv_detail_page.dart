@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ditonton/common/constants.dart'; 
+import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/features/tv/domain/entities/entites.dart';
 import 'package:ditonton/features/tv/presentation/bloc/bloc_export.dart';
 import 'package:ditonton/common/state_enum.dart';
@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class TvDetailPage extends StatefulWidget {
-  static const routeName = '/detail-tv';
+  static const routeName = '/tv-detail';
 
   final int id;
   const TvDetailPage({super.key, required this.id});
@@ -234,9 +234,7 @@ class DetailContent extends StatelessWidget {
                 ),
               );
             },
-            // initialChildSize: 0.5,
             minChildSize: 0.25,
-            // maxChildSize: 1.0,
           ),
         ),
         Padding(

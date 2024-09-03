@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ditonton/features/tv/presentation/widgets/tv_card_list.dart';
 
 class TvPopularPage extends StatefulWidget {
-  static const routeName = '/popular-tv';
+  static const routeName = '/tv-popular';
 
   const TvPopularPage({super.key});
 

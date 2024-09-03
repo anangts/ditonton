@@ -39,34 +39,34 @@ class _MovieHomePageState extends State<MovieHomePage> {
           children: [
             const UserAccountsDrawerHeader(
               currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage('assets/circle-g.png'),
+                backgroundImage: AssetImage('assets/logo/circle-g.png'),
               ),
               accountName: Text('Ditonton'),
               accountEmail: Text('ditonton@dicoding.com'),
             ),
             ListTile(
-              leading: const Icon(Icons.movie),
+              leading: const Icon(Icons.movie_rounded),
               title: const Text('Movies'),
               onTap: () {
                 Navigator.pushNamed(context, MovieHomePage.routeName);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.movie),
+              leading: const Icon(Icons.tv_rounded),
               title: const Text('TV Series'),
               onTap: () {
                 Navigator.pushNamed(context, TvHomePage.routeName);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.save_alt),
+              leading: const Icon(Icons.save_alt_rounded),
               title: const Text('Watchlist Movie'),
               onTap: () {
                 Navigator.pushNamed(context, MovieWatchlistPage.routeName);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.save_alt),
+              leading: const Icon(Icons.save_alt_rounded),
               title: const Text('Watchlist TV Series'),
               onTap: () {
                 Navigator.pushNamed(context, WatchlistTvPage.routeName);

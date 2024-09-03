@@ -6,7 +6,7 @@ import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/features/tv/presentation/widgets/tv_card_list.dart';
 
 class WatchlistTvPage extends StatefulWidget {
-  static const routeName = '/watchlist-tv';
+  static const routeName = '/tv-watchlist';
 
   const WatchlistTvPage({super.key});
 

@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TvHomePage extends StatefulWidget {
-  static const routeName = '/home-tv';
+  static const routeName = '/tv-home';
   const TvHomePage({super.key});
 
   @override
@@ -38,34 +38,34 @@ class _TvHomePageState extends State<TvHomePage> {
           children: [
             const UserAccountsDrawerHeader(
               currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage('assets/circle-g.png'),
+                backgroundImage: AssetImage('assets/logo/circle-g.png'),
               ),
               accountName: Text('Ditonton'),
               accountEmail: Text('ditonton@dicoding.com'),
             ),
             ListTile(
-              leading: const Icon(Icons.tv),
-              title: const Text('Tv'),
+              leading: const Icon(Icons.movie_rounded),
+              title: const Text('Movies'),
               onTap: () {
                 Navigator.pushNamed(context, TvHomePage.routeName);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.tv),
+              leading: const Icon(Icons.tv_rounded),
               title: const Text('TV Series'),
               onTap: () {
                 Navigator.pushNamed(context, TvHomePage.routeName);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.save_alt),
-              title: const Text('Watchlist Tv'),
+              leading: const Icon(Icons.save_alt_rounded),
+              title: const Text('Watchlist Movie'),
               onTap: () {
                 Navigator.pushNamed(context, MovieWatchlistPage.routeName);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.save_alt),
+              leading: const Icon(Icons.save_alt_rounded),
               title: const Text('Watchlist TV Series'),
               onTap: () {
                 Navigator.pushNamed(context, WatchlistTvPage.routeName);

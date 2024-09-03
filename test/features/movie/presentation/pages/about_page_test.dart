@@ -17,7 +17,7 @@ void main() {
     final image = tester.widget<Image>(imageFinder);
     expect(
       (image.image as AssetImage).assetName,
-      'assets/circle-g.png',
+      'assets/logo/circle-g.png',
     );
 
     // Verify that the Text widget is displayed

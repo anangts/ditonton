@@ -6,7 +6,7 @@ import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/features/tv/presentation/widgets/tv_card_list.dart';
 
 class TvSearchPage extends StatelessWidget {
-  static const routeName = '/search-tv';
+  static const routeName = '/tv-search';
 
   const TvSearchPage({super.key});
 

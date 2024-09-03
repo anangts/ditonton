@@ -2,7 +2,7 @@
 // in ditonton/test/features/movie/presentation/bloc/movie_list_test/movie_list_bloc_test.dart.
 // Do not manually edit this file.
 
-// ignore_for_file: no_leading_underscores_for_library_prefixes
+// ignore_for_file: no_leading_underscores_for_library_prefixes, must_be_immutable
 import 'dart:async' as _i5;
 
 import 'package:dartz/dartz.dart' as _i3;
@@ -162,7 +162,6 @@ class MockGetTopRatedMovies extends _i1.Mock implements _i9.GetTopRatedMovies {
 /// A class which mocks [Failure].
 ///
 /// See the documentation for Mockito's code generation for more information.
-// ignore: must_be_immutable
 class MockFailure extends _i1.Mock implements _i6.Failure {
   MockFailure() {
     _i1.throwOnMissingStub(this);

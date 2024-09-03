@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ditonton/features/movie/data/datasources/movie_remote_data_source.dart';
 import 'package:ditonton/features/movie/data/models/movie_detail_model.dart';
@@ -13,14 +14,27 @@ import '../../json_reader.dart';
 
 void main() {
   const apiKey = 'api_key=2174d146bb9c0eab47529b2e77d6b526';
-  const baseUrl = 'https://api.themoviedb.org/3';
 
+  const baseUrl = 'https://api.themoviedb.org/3';
+  TestWidgetsFlutterBinding.ensureInitialized();
   late MovieRemoteDataSourceImpl dataSource;
   late MockHttpClient mockHttpClient;
 
   setUp(() {
     mockHttpClient = MockHttpClient();
     dataSource = MovieRemoteDataSourceImpl(client: mockHttpClient);
+  });
+
+  group('SSL Pinning', () {
+    test('should throw an exception when SSL pinning fails', () async {
+      // Arrange: Simulate a TlsException when trying to load the certificate
+      when(mockHttpClient.get(any))
+          .thenThrow(const TlsException('SSL Pinning Error'));
+
+      // Act & Assert: Attempt to create the data source and expect a TlsException
+      expect(() async => await dataSource.getNowPlayingMovies(),
+          throwsA(isA<TlsException>()));
+    });
   });
 
   group('get Now Playing Movies', () {

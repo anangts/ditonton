@@ -1,5 +1,7 @@
 # ditonton
 
+[![Codemagic build status](https://api.codemagic.io/apps/66d6c76e0becf10eb5ff9a3e/66d71580863a114583688a96/status_badge.svg)](https://codemagic.io/app/66d6c76e0becf10eb5ff9a3e/build/66d71580863a114583688a96)
+
 **ditonton** is a sleek and user-friendly mobile application that provides up-to-date information about movies and TV series using data from The Movie Database (TMDb) API. Whether you're a casual viewer or a dedicated cinephile, this app is your go-to resource for discovering new films, exploring popular TV shows, and tracking your favorites.
 
 ![App Screenshot](./assets/img/movie.png)
@@ -39,3 +41,4 @@ Here are some screenshots from the test app to demonstrate various states and fu
    ```bash
    git clone https://github.com/saptrian/ditonton.git
    cd ditonton
+   ```

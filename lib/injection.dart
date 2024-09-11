@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ditonton/features/movie/data/datasources/db/database_helper.dart';
 import 'package:ditonton/features/movie/data/datasources/movie_local_data_source.dart';
 import 'package:ditonton/features/movie/data/datasources/movie_remote_data_source.dart';
@@ -29,6 +31,7 @@ import 'package:ditonton/features/tv/domain/usecases/tv_save_watchlist.dart';
 import 'package:ditonton/features/tv/domain/usecases/tv_search.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_it/get_it.dart';
+import 'package:http/io_client.dart';
 
 import 'features/movie/presentation/bloc/bloc_export.dart';
 import 'features/tv/domain/repositories/tv_repository.dart';
@@ -37,6 +40,10 @@ import 'features/tv/presentation/bloc/bloc_export.dart';
 final locator = GetIt.instance;
 
 void init() {
+  locator.registerLazySingleton<IOClient>(() {
+    return IOClient(HttpClient());
+  });
+
   // Register BLoCs instead of Notifiers
   locator.registerFactory(
     () => MovieListBloc(

@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:ditonton/common/api_config.dart';
 import 'package:ditonton/features/tv/data/models/tv_detail_model.dart';
 import 'package:ditonton/features/tv/data/models/tv_model.dart';
 import 'package:ditonton/features/tv/data/models/tv_response.dart';
 import 'package:ditonton/common/exception.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:flutter/services.dart';
 
@@ -19,47 +18,26 @@ abstract class TvRemoteDataSource {
 }
 
 class TvRemoteDataSourceImpl implements TvRemoteDataSource {
-  static const apiKey = 'api_key=2174d146bb9c0eab47529b2e77d6b526';
-  static const baseUrl = 'https://api.themoviedb.org/3';
-
-  final http.Client client;
+  final IOClient client;
 
   TvRemoteDataSourceImpl({required this.client});
-
-  // Asynchronous factory constructor for SSL pinning
-  static Future<TvRemoteDataSourceImpl> create() async {
-    final client = await _createHttpClient();
-    return TvRemoteDataSourceImpl(client: client);
-  }
-
-  // Method to create a custom HttpClient with SSL pinning
-  static Future<http.Client> _createHttpClient() async {
-    SecurityContext context = SecurityContext(withTrustedRoots: false);
-    try {
-      final List<int> bytes =
-          (await rootBundle.load('assets/certs/themoviedb-org.pem'))
-              .buffer
-              .asUint8List();
-      context.setTrustedCertificatesBytes(bytes);
-    } on TlsException catch (e) {
-      debugPrint('SSL Pinning Error: $e');
-      rethrow;
-    }
-
-    HttpClient httpClient = HttpClient(context: context);
-    httpClient.badCertificateCallback =
-        (X509Certificate cert, String host, int port) {
-      return false;
-    };
-
-    return IOClient(httpClient);
+  Future<SecurityContext> get globalContext async {
+    final sslCert = await rootBundle.load('assets/certs/themoviedb-org.pem');
+    SecurityContext securityContext = SecurityContext(withTrustedRoots: false);
+    securityContext.setTrustedCertificatesBytes(sslCert.buffer.asInt8List());
+    return securityContext;
   }
 
   @override
   Future<List<TvModel>> getNowPlayingTv() async {
+    HttpClient client = HttpClient(context: await globalContext);
+    client.badCertificateCallback =
+        (X509Certificate cert, String host, int port) => false;
+    IOClient ioClient = IOClient(client);
+    //uncomment to check ssl-pinning
+    //final response = await ioClient.get(Uri.parse('https://www.google.com/'));
     final response =
-        await client.get(Uri.parse('$baseUrl/tv/airing_today?$apiKey'));
-
+        await ioClient.get(Uri.parse('$baseUrl/tv/airing_today?$apiKey'));
     if (response.statusCode == 200) {
       return TvResponse.fromJson(json.decode(response.body)).tvList;
     } else {

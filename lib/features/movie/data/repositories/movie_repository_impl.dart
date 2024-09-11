@@ -22,7 +22,7 @@ class MovieRepositoryImpl implements MovieRepository {
   @override
   Future<Either<Failure, List<Movie>>> getNowPlayingMovies() async {
     try {
-      final result = await remoteDataSource.getNowPlayingMovies();
+      final result = await remoteDataSource.getNowPlayingMovie();
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return const Left(ServerFailure(''));
@@ -58,7 +58,7 @@ class MovieRepositoryImpl implements MovieRepository {
   @override
   Future<Either<Failure, List<Movie>>> getPopularMovies() async {
     try {
-      final result = await remoteDataSource.getPopularMovies();
+      final result = await remoteDataSource.getPopularMovie();
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return const Left(ServerFailure(''));
@@ -70,7 +70,7 @@ class MovieRepositoryImpl implements MovieRepository {
   @override
   Future<Either<Failure, List<Movie>>> getTopRatedMovies() async {
     try {
-      final result = await remoteDataSource.getTopRatedMovies();
+      final result = await remoteDataSource.getTopRatedMovie();
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return const Left(ServerFailure(''));
@@ -82,7 +82,7 @@ class MovieRepositoryImpl implements MovieRepository {
   @override
   Future<Either<Failure, List<Movie>>> searchMovies(String query) async {
     try {
-      final result = await remoteDataSource.searchMovies(query);
+      final result = await remoteDataSource.searchMovie(query);
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
       return const Left(ServerFailure(''));

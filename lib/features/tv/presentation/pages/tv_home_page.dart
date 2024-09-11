@@ -47,7 +47,7 @@ class _TvHomePageState extends State<TvHomePage> {
               leading: const Icon(Icons.movie_rounded),
               title: const Text('Movies'),
               onTap: () {
-                Navigator.pushNamed(context, TvHomePage.routeName);
+                Navigator.pushNamed(context, MovieHomePage.routeName);
               },
             ),
             ListTile(

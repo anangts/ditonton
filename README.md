@@ -39,6 +39,6 @@ Here are some screenshots from the test app to demonstrate various states and fu
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/saptrian/ditonton.git
+   git clone https://github.com/anangts/ditonton.git
    cd ditonton
    ```

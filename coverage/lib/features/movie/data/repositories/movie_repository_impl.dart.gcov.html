@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2024-09-03 20:51:21</td>
+            <td class="headerValue">2024-09-11 19:47:53</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -80,7 +80,7 @@
 <a name="22"><span class="lineNum">      22 </span><span class="lineCov">          1 :   @override</span></a>
 <a name="23"><span class="lineNum">      23 </span>            :   Future&lt;Either&lt;Failure, List&lt;Movie&gt;&gt;&gt; getNowPlayingMovies() async {</a>
 <a name="24"><span class="lineNum">      24 </span>            :     try {</a>
-<a name="25"><span class="lineNum">      25 </span><span class="lineCov">          2 :       final result = await remoteDataSource.getNowPlayingMovies();</span></a>
+<a name="25"><span class="lineNum">      25 </span><span class="lineCov">          2 :       final result = await remoteDataSource.getNowPlayingMovie();</span></a>
 <a name="26"><span class="lineNum">      26 </span><span class="lineCov">          5 :       return Right(result.map((model) =&gt; model.toEntity()).toList());</span></a>
 <a name="27"><span class="lineNum">      27 </span><span class="lineCov">          1 :     } on ServerException {</span></a>
 <a name="28"><span class="lineNum">      28 </span>            :       return const Left(ServerFailure(''));</a>
@@ -116,7 +116,7 @@
 <a name="58"><span class="lineNum">      58 </span><span class="lineCov">          1 :   @override</span></a>
 <a name="59"><span class="lineNum">      59 </span>            :   Future&lt;Either&lt;Failure, List&lt;Movie&gt;&gt;&gt; getPopularMovies() async {</a>
 <a name="60"><span class="lineNum">      60 </span>            :     try {</a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          2 :       final result = await remoteDataSource.getPopularMovies();</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          2 :       final result = await remoteDataSource.getPopularMovie();</span></a>
 <a name="62"><span class="lineNum">      62 </span><span class="lineCov">          5 :       return Right(result.map((model) =&gt; model.toEntity()).toList());</span></a>
 <a name="63"><span class="lineNum">      63 </span><span class="lineCov">          1 :     } on ServerException {</span></a>
 <a name="64"><span class="lineNum">      64 </span>            :       return const Left(ServerFailure(''));</a>
@@ -128,7 +128,7 @@
 <a name="70"><span class="lineNum">      70 </span><span class="lineCov">          1 :   @override</span></a>
 <a name="71"><span class="lineNum">      71 </span>            :   Future&lt;Either&lt;Failure, List&lt;Movie&gt;&gt;&gt; getTopRatedMovies() async {</a>
 <a name="72"><span class="lineNum">      72 </span>            :     try {</a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          2 :       final result = await remoteDataSource.getTopRatedMovies();</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          2 :       final result = await remoteDataSource.getTopRatedMovie();</span></a>
 <a name="74"><span class="lineNum">      74 </span><span class="lineCov">          5 :       return Right(result.map((model) =&gt; model.toEntity()).toList());</span></a>
 <a name="75"><span class="lineNum">      75 </span><span class="lineCov">          1 :     } on ServerException {</span></a>
 <a name="76"><span class="lineNum">      76 </span>            :       return const Left(ServerFailure(''));</a>
@@ -140,7 +140,7 @@
 <a name="82"><span class="lineNum">      82 </span><span class="lineCov">          1 :   @override</span></a>
 <a name="83"><span class="lineNum">      83 </span>            :   Future&lt;Either&lt;Failure, List&lt;Movie&gt;&gt;&gt; searchMovies(String query) async {</a>
 <a name="84"><span class="lineNum">      84 </span>            :     try {</a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineCov">          2 :       final result = await remoteDataSource.searchMovies(query);</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">          2 :       final result = await remoteDataSource.searchMovie(query);</span></a>
 <a name="86"><span class="lineNum">      86 </span><span class="lineCov">          5 :       return Right(result.map((model) =&gt; model.toEntity()).toList());</span></a>
 <a name="87"><span class="lineNum">      87 </span><span class="lineCov">          1 :     } on ServerException {</span></a>
 <a name="88"><span class="lineNum">      88 </span>            :       return const Left(ServerFailure(''));</a>

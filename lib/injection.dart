@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ditonton/common/ssl_pinning.dart';
 import 'package:ditonton/features/movie/data/datasources/db/database_helper.dart';
 import 'package:ditonton/features/movie/data/datasources/movie_local_data_source.dart';
 import 'package:ditonton/features/movie/data/datasources/movie_remote_data_source.dart';
@@ -108,8 +109,12 @@ void init() {
   );
 
   // data sources
+  locator.registerLazySingleton<SSLPinning>(() => SSLPinning());
+
+  // Register MovieRemoteDataSourceImpl with injected dependency
   locator.registerLazySingleton<MovieRemoteDataSource>(
-      () => MovieRemoteDataSourceImpl(client: locator()));
+    () => MovieRemoteDataSourceImpl(sslPinning: locator()),
+  );
   locator.registerLazySingleton<MovieLocalDataSource>(
       () => MovieLocalDataSourceImpl(databaseHelper: locator()));
 

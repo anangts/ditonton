@@ -130,8 +130,8 @@ class TvRemoteDataSourceImpl implements TvRemoteDataSource {
   @override
   Future<List<TvModel>> getNowPlayingTv() async {
     // uncomment this to check SSL Pinning Security
-    final response = await _getResponse('https://www.google.com/');
-    // final response = await _getResponse('$baseUrl/tv/airing_today?$apiKey');
+    //final response = await _getResponse('https://www.google.com/');
+    final response = await _getResponse('$baseUrl/tv/airing_today?$apiKey');
     return TvResponse.fromJson(json.decode(response)).tvList;
   }
 

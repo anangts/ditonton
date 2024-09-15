@@ -24,7 +24,7 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   @override
   Future<List<MovieModel>> getNowPlayingMovie() async {
     // uncomment this to check SSL Pinning Security
-    // final response = await _getResponse('https://www.google.com/');
+    //final response = await _getResponse('https://www.google.com/');
     final response = await _getResponse('$baseUrl/movie/now_playing?$apiKey');
     return MovieResponse.fromJson(json.decode(response)).movieList;
   }

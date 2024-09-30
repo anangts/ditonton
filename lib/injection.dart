@@ -22,13 +22,14 @@ import 'features/tv/presentation/bloc/bloc_export.dart';
 
 final locator = GetIt.instance;
 
-void init() {
-  locator.registerLazySingleton<IOClient>(() {
-    return IOClient(HttpClient());
-  });
+Future<void> init() async {
+  IOClient ioClient = await SslPinning.ioClient;
+
+  // external i.e. http client
+  locator.registerLazySingleton<IOClient>(() => ioClient);
 
   // Register BLoCs instead of Notifiers
-  locator.registerFactory(
+  locator.registerLazySingleton<MovieListBloc>(
     () => MovieListBloc(
       getNowPlayingMovies: locator(),
       getPopularMovies: locator(),
@@ -71,16 +72,24 @@ void init() {
   );
 
   // use case
-  locator.registerLazySingleton(() => GetNowPlayingMovies(locator()));
-  locator.registerLazySingleton(() => GetPopularMovies(locator()));
-  locator.registerLazySingleton(() => GetTopRatedMovies(locator()));
-  locator.registerLazySingleton(() => GetMovieDetail(locator()));
-  locator.registerLazySingleton(() => GetMovieRecommendations(locator()));
-  locator.registerLazySingleton(() => SearchMovies(locator()));
-  locator.registerLazySingleton(() => GetWatchListStatus(locator()));
-  locator.registerLazySingleton(() => SaveWatchlist(locator()));
-  locator.registerLazySingleton(() => RemoveWatchlist(locator()));
-  locator.registerLazySingleton(() => GetWatchlistMovies(locator()));
+  locator.registerLazySingleton<GetNowPlayingMovies>(
+      () => GetNowPlayingMovies(locator()));
+  locator.registerLazySingleton<GetPopularMovies>(
+      () => GetPopularMovies(locator()));
+  locator.registerLazySingleton<GetTopRatedMovies>(
+      () => GetTopRatedMovies(locator()));
+  locator
+      .registerLazySingleton<GetMovieDetail>(() => GetMovieDetail(locator()));
+  locator.registerLazySingleton<GetMovieRecommendations>(
+      () => GetMovieRecommendations(locator()));
+  locator.registerLazySingleton<SearchMovies>(() => SearchMovies(locator()));
+  locator.registerLazySingleton<GetWatchListStatus>(
+      () => GetWatchListStatus(locator()));
+  locator.registerLazySingleton<SaveWatchlist>(() => SaveWatchlist(locator()));
+  locator
+      .registerLazySingleton<RemoveWatchlist>(() => RemoveWatchlist(locator()));
+  locator.registerLazySingleton<GetWatchlistMovies>(
+      () => GetWatchlistMovies(locator()));
 
   // repository
   locator.registerLazySingleton<MovieRepository>(
@@ -90,17 +99,13 @@ void init() {
     ),
   );
 
-  // data sources
-  locator.registerLazySingleton<SSLPinning>(() => SSLPinning());
-
   // http
   locator.registerLazySingleton<HttpClient>(() => HttpClient());
 
   // Register MovieRemoteDataSourceImpl
   locator.registerLazySingleton<MovieRemoteDataSource>(
       () => MovieRemoteDataSourceImpl(
-            sslPinning: locator<SSLPinning>(),
-            client: locator<IOClient>(),
+            locator(),
           ));
 
   locator.registerLazySingleton<MovieLocalDataSource>(
@@ -176,8 +181,7 @@ void init() {
   // data sources
   locator
       .registerLazySingleton<TvRemoteDataSource>(() => TvRemoteDataSourceImpl(
-            client: locator(),
-            sslPinning: locator<SSLPinning>(),
+            locator(),
           ));
   locator.registerLazySingleton<TvLocalDataSource>(
       () => TvLocalDataSourceImpl(databaseHelper: locator()));

@@ -1,142 +1,264 @@
 import 'dart:convert';
-
-import 'package:ditonton/common/ssl_pinning.dart';
-import 'package:ditonton/features/tv/data/datasources/tv_remote_data_source.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-
-import 'package:ditonton/features/tv/data/models/models.dart';
-
 import 'package:ditonton/common/api_config.dart';
-
+import 'package:ditonton/features/tv/data/datasources/tv_remote_data_source.dart';
+import 'package:ditonton/features/tv/data/models/tv_detail_model.dart';
+import 'package:ditonton/features/tv/data/models/tv_model.dart';
+import 'package:ditonton/features/tv/data/models/tv_response.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:http/io_client.dart';
-
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'tv_remote_data_source_test.mocks.dart';
 
-import '../../../movie/helpers/test_helper.mocks.dart';
-
+@GenerateMocks([IOClient])
 void main() {
-  group('TvRemoteDataSourceImpl', () {
-    WidgetsFlutterBinding.ensureInitialized();
-    late TvRemoteDataSourceImpl dataSource;
-    late MockClient client;
-    late SSLPinning sslPinning;
+  late TvRemoteDataSourceImpl dataSource;
+  late MockIOClient mockHttpClient;
 
-    setUp(() {
-      client = MockClient();
+  setUp(() {
+    mockHttpClient = MockIOClient();
+    dataSource = TvRemoteDataSourceImpl(mockHttpClient);
+  });
 
-      // Mock consistent API responses
-      when(client.get(any)).thenAnswer((invocation) async {
-        final request = invocation.positionalArguments[0];
-        switch (request.url.toString()) {
-          case '$baseUrl/tv/airing_today?$apiKey':
-            return http.Response(
-              jsonEncode({
-                'results': [
-                  {
-                    'id': 1,
-                    'title': 'Tv 1',
-                    'overview': 'This is a tv',
-                    'poster_path': '/path/to/poster',
-                    'release_date': '2022-01-01',
-                    'vote_average': 8.5,
-                    'vote_count': 100,
-                  },
-                ],
-              }),
-              200,
-            );
-          case '$baseUrl/tv/popular?$apiKey':
-            return http.Response(
-              jsonEncode({
-                'results': [
-                  {
-                    'id': 3,
-                    'title': 'Tv 3',
-                    'overview': 'This is a popular tv',
-                    'poster_path': '/path/to/poster',
-                    'release_date': '2022-01-01',
-                    'vote_average': 9.0,
-                    'vote_count': 200,
-                  },
-                ],
-              }),
-              200,
-            );
-          case '$baseUrl/tv/top_rated?$apiKey':
-            return http.Response(
-              jsonEncode({
-                'results': [
-                  {
-                    'id': 5,
-                    'title': 'Tv 5',
-                    'overview': 'This is a top-rated tv',
-                    'poster_path': '/path/to/poster',
-                    'release_date': '2022-01-01',
-                    'vote_average': 9.5,
-                    'vote_count': 300,
-                  },
-                ],
-              }),
-              200,
-            );
-          case '$baseUrl/search/tv?$apiKey&query=hello':
-            return http.Response(
-              jsonEncode({
-                'results': [
-                  {
-                    'id': 9,
-                    'title': 'Tv 9',
-                    'overview': 'This is a searched tv',
-                    'poster_path': '/path/to/poster',
-                    'release_date': '2022-01-01',
-                    'vote_average': 8.5,
-                    'vote_count': 100,
-                  },
-                ],
-              }),
-              200,
-            );
-          default:
-            return http.Response('Not found', 404);
-        }
-      });
+  group('getNowPlayingTv', () {
+    final tTvList = [
+      const TvModel(
+        adult: false,
+        backdropPath: "/path.jpg",
+        genreIds: [12, 16, 35],
+        id: 1,
+        originalName: 'Spider-Man: No Way Home',
+        overview: 'Peter Parker faces a challenge with the multiverse.',
+        popularity: 100.0,
+        posterPath: "/poster.jpg",
+        releaseDate: "2021-12-17",
+        name: 'Spider-Man: No Way Home',
+        video: false,
+        voteAverage: 8.5,
+        voteCount: 2000,
+      ),
+    ];
 
-      sslPinning = SSLPinning();
-      dataSource =
-          TvRemoteDataSourceImpl(client: IOClient(), sslPinning: sslPinning);
-    });
-    test('getNowPlayingTv returns a list of tv', () async {
+    final tTvResponse = TvResponse(tvList: tTvList);
+
+    test(
+        'should return list of TvModel when the response code is 200 (success)',
+        () async {
+      // Arrange
+
+      when(mockHttpClient.get(Uri.parse('$baseUrl/tv/airing_today?$apiKey')))
+          .thenAnswer(
+              (_) async => Response(json.encode(tTvResponse.toJson()), 200));
+
+      // Act
       final result = await dataSource.getNowPlayingTv();
 
-      expect(result, isA<List<TvModel>>());
-      expect(result.length, greaterThan(0));
-      expect(result[0].id, isNotNull);
+      // Assert
+      expect(result, tTvList);
     });
 
-    test('getPopularTv returns a list of tv', () async {
+    test('should throw an exception when the response code is not 200',
+        () async {
+      // Arrange
+      when(mockHttpClient.get(Uri.parse('$baseUrl/tv/airing_today?$apiKey')))
+          .thenAnswer((_) async => Response('Something went wrong', 404));
+
+      // Act
+      final call = dataSource.getNowPlayingTv();
+
+      // Assert
+      expect(() => call, throwsA(isA<Exception>()));
+    });
+  });
+  group('getTvDetail', () {
+    const tTvDetail = TvDetailResponse(
+      adult: false,
+      backdropPath: "/path.jpg",
+      budget: 200000000,
+      genres: [],
+      homepage: 'https://spiderman.com',
+      id: 1,
+      imdbId: 'tt1234567',
+      originalLanguage: 'en',
+      originalName: 'Spider-Man: No Way Home',
+      overview: 'Peter Parker faces a challenge with the multiverse.',
+      popularity: 100.0,
+      posterPath: "/poster.jpg",
+      releaseDate: "2021-12-17",
+      revenue: 1500000000,
+      runtime: 120,
+      status: 'Released',
+      tagline: 'No one goes home.',
+      name: 'Spider-Man: No Way Home',
+      video: false,
+      voteAverage: 8.5,
+      voteCount: 2000,
+    );
+
+    const tTvId = 1;
+    test('should return TvDetailResponse when the response code is 200',
+        () async {
+      // Arrange
+      when(mockHttpClient.get(any)).thenAnswer(
+          (_) async => http.Response(json.encode(tTvDetail.toJson()), 200));
+
+      // Act
+      final result = await dataSource.getTvDetail(tTvId);
+
+      // Assert
+      expect(result, tTvDetail);
+    });
+  });
+
+  group('getTvRecommendations', () {
+    final tTvList = [
+      const TvModel(
+        adult: false,
+        backdropPath: "/path.jpg",
+        genreIds: [12, 16, 35],
+        id: 2,
+        originalName: 'Avengers: Endgame',
+        overview: 'The Avengers take a final stand against Thanos.',
+        popularity: 200.0,
+        posterPath: "/avengers.jpg",
+        releaseDate: "2019-04-26",
+        name: 'Avengers: Endgame',
+        video: false,
+        voteAverage: 9.0,
+        voteCount: 3000,
+      ),
+    ];
+
+    final tTvResponse = TvResponse(tvList: tTvList);
+
+    test(
+        'should return list of TvModel when the response code is 200 (success)',
+        () async {
+      // Arrange
+      when(mockHttpClient
+              .get(Uri.parse('$baseUrl/tv/1/recommendations?$apiKey')))
+          .thenAnswer(
+              (_) async => Response(json.encode(tTvResponse.toJson()), 200));
+
+      // Act
+      final result = await dataSource.getTvRecommendations(1);
+
+      // Assert
+      expect(result, tTvList);
+    });
+
+    test('should throw an exception when the response code is not 200',
+        () async {
+      // Arrange
+      when(mockHttpClient
+              .get(Uri.parse('$baseUrl/tv/1/recommendations?$apiKey')))
+          .thenAnswer((_) async => Response('Something went wrong', 404));
+
+      // Act
+      final call = dataSource.getTvRecommendations(1);
+
+      // Assert
+      expect(() => call, throwsA(isA<Exception>()));
+    });
+  });
+
+  group('getPopularTv', () {
+    const tTvResponse = TvResponse(tvList: []);
+
+    test(
+        'should return list of TvModel when the response code is 200 (success)',
+        () async {
+      // Arrange
+      when(mockHttpClient.get(Uri.parse('$baseUrl/tv/popular?$apiKey')))
+          .thenAnswer(
+              (_) async => Response(json.encode(tTvResponse.toJson()), 200));
+
+      // Act
       final result = await dataSource.getPopularTv();
 
-      expect(result, isA<List<TvModel>>());
-      expect(result.length, greaterThan(0));
-      expect(result[0].id, isNotNull);
+      // Assert
+      expect(result, tTvResponse.tvList);
     });
 
-    test('getTopRated Tv returns a list of tv', () async {
+    test('should throw an exception when the response code is not 200',
+        () async {
+      // Arrange
+      when(mockHttpClient.get(Uri.parse('$baseUrl/tv/popular?$apiKey')))
+          .thenAnswer((_) async => Response('Something went wrong', 404));
+
+      // Act
+      final call = dataSource.getPopularTv();
+
+      // Assert
+      expect(() => call, throwsA(isA<Exception>()));
+    });
+  });
+
+  group('getTopRatedTv', () {
+    const tTvResponse = TvResponse(tvList: []);
+
+    test(
+        'should return list of TvModel when the response code is 200 (success)',
+        () async {
+      // Arrange
+      when(mockHttpClient.get(Uri.parse('$baseUrl/tv/top_rated?$apiKey')))
+          .thenAnswer(
+              (_) async => Response(json.encode(tTvResponse.toJson()), 200));
+
+      // Act
       final result = await dataSource.getTopRatedTv();
 
-      expect(result, isA<List<TvModel>>());
-      expect(result.length, greaterThan(0));
-      expect(result[0].id, isNotNull);
+      // Assert
+      expect(result, tTvResponse.tvList);
     });
 
-    test('searchTv returns a list of tv', () async {
-      final result = await dataSource.searchTv('hello');
+    test('should throw an exception when the response code is not 200',
+        () async {
+      // Arrange
+      when(mockHttpClient.get(Uri.parse('$baseUrl/tv/top_rated?$apiKey')))
+          .thenAnswer((_) async => Response('Something went wrong', 404));
 
-      expect(result, isA<List<TvModel>>());
-      expect(result.length, greaterThan(0));
-      expect(result[0].id, isNotNull);
-    }, timeout: const Timeout(Duration(minutes: 2)));
+      // Act
+      final call = dataSource.getTopRatedTv();
+
+      // Assert
+      expect(() => call, throwsA(isA<Exception>()));
+    });
+  });
+
+  group('searchTv', () {
+    const tTvResponse = TvResponse(tvList: []);
+
+    test(
+        'should return list of TvModel when the response code is 200 (success)',
+        () async {
+      // Arrange
+      when(mockHttpClient
+              .get(Uri.parse('$baseUrl/search/tv?$apiKey&query=spiderman')))
+          .thenAnswer(
+              (_) async => Response(json.encode(tTvResponse.toJson()), 200));
+
+      // Act
+      final result = await dataSource.searchTv('spiderman');
+
+      // Assert
+      expect(result, tTvResponse.tvList);
+    });
+
+    test('should throw an exception when the response code is not 200',
+        () async {
+      // Arrange
+      when(mockHttpClient
+              .get(Uri.parse('$baseUrl/search/tv?$apiKey&query=spiderman')))
+          .thenAnswer((_) async => Response('Something went wrong', 404));
+
+      // Act
+      final call = dataSource.searchTv('spiderman');
+
+      // Assert
+      expect(() => call, throwsA(isA<Exception>()));
+    });
   });
 }

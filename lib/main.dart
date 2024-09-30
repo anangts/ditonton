@@ -18,12 +18,8 @@ import 'features/tv/presentation/pages/page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  di.init();
-
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await di.init();
   runApp(const MyApp());
 }
 
